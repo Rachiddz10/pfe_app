@@ -1,0 +1,13 @@
+import 'package:flutter/material.dart';
+
+const kText = Text(
+  '   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat lacinia arcu, condimentum dignissim magna porttitor eu. Quisque id vestibulum quam. Morbi justo sapien, varius ut felis eu, scelerisque mollis sem. Integer tristique enim dui, at lobortis lorem tristique sed. Nunc et iaculis orci. Duis vel commodo augue. Praesent dignissim quis tortor at ultricies. Donec ultricies, arcu tempus molestie finibus, enim ante dignissim eros, eget interdum elit nunc et elit. Ut lobortis turpis vel elit commodo, quis sodales enim lobortis. Sed lacinia, dui quis placerat condimentum, nisl lectus rhoncus metus, vitae congue magna turpis vel nunc. Aliquam finibus leo eu tortor consequat vestibulum. Aenean at finibus lorem, nec finibus dui. Ut non fermentum erat. Curabitur imperdiet gravida semper. Mauris id orci sollicitudin, mollis justo non, viverra turpis. Nam efficitur sem in leo dapibus, et pharetra est volutpat.\n  Vestibulum ornare vulputate pretium. Duis viverra, orci ut mattis bibendum, ligula sem gravida ligula, eu ullamcorper tellus libero at nulla. Mauris sagittis aliquam lacus, id tincidunt mi cursus eget. Donec blandit pulvinar diam, nec fermentum nisi bibendum ac. Sed dui quam, sodales et odio ac, gravida efficitur lacus. Etiam pretium arcu nec rhoncus porta. Vestibulum at luctus velit. Aenean sed ante dapibus nibh pretium gravida. Sed sit amet nulla aliquet, convallis magna vel, cursus ex. Suspendisse risus arcu, ultricies in pretium id, congue eu libero. Cras nisl nunc, rutrum et tincidunt non, auctor vel erat. Nullam efficitur, nulla vel finibus ultricies, velit metus facilisis ligula, pretium sagittis enim turpis at odio. Donec venenatis gravida velit, sit amet vehicula ligula dapibus a. Phasellus tincidunt cursus lacus eget sollicitudin. Ut mauris felis, viverra ut massa vel, consequat laoreet nisi. \n Curabitur blandit finibus facilisis. Integer rutrum, nunc fermentum accumsan aliquet, turpis erat mollis ligula, sed commodo urna nunc quis elit. Phasellus condimentum erat tortor, vitae cursus orci facilisis in. Nam sagittis velit venenatis, interdum ligula quis, viverra nibh. Mauris in volutpat tellus, eget posuere arcu. Aenean consequat lobortis augue, a vestibulum eros pulvinar a. Nunc diam enim, tempor id pharetra nec, laoreet at lectus. Nullam congue diam risus. Nunc odio orci, venenatis molestie efficitur in, pellentesque et erat. Morbi scelerisque felis at elit feugiat, quis dignissim nisl faucibus. Morbi a feugiat ligula.',
+  style: TextStyle(
+    color: Colors.black,
+    fontSize: 15.0,
+  ),
+  textAlign: TextAlign.justify,
+);
+
+const kColorSelected = Color(0xFFC5CAE9);
+const kColorNotSelected = Color(0xFFD7CCC8);
