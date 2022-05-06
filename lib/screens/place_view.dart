@@ -5,6 +5,7 @@ import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/gallery.dart';
 import 'package:http/http.dart' as http;
 import 'package:pfe_app/core/geo_location.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 const apiKey = Text('a1173da81b738a5fdc4ad146f555d9ab');
 
@@ -17,17 +18,24 @@ class PlaceView extends StatefulWidget {
 }
 
 class _PlaceViewState extends State<PlaceView> {
-  double? temp;
+  double? temperature;
+  int? temp;
+  String? weatherDescription;
+  String? iconURL;
 
   Location location = Location();
+
 
   Future getDataMeteo() async {
     http.Response response = await http.get(Uri.parse(
         'https://api.openweathermap.org/data/2.5/weather?lat=34.8562728&lon=-1.7312301&appid=a1173da81b738a5fdc4ad146f555d9ab&units=metric'));
     if (response.statusCode == 200) {
       String data = response.body;
-      temp = jsonDecode(data)['main']['temp'];
-      print(temp);
+      temperature = jsonDecode(data)['main']['temp'];
+      temp = temperature!.toInt();
+      weatherDescription = jsonDecode(data)['weather'][0]['description'];
+      var condition = jsonDecode(data)['weather'][0]['icon'];
+      iconURL = 'http://openweathermap.org/img/wn/$condition@2x.png';
       return temp;
     } else {
       throw Exception('Failed to load');
@@ -54,6 +62,8 @@ class _PlaceViewState extends State<PlaceView> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       body: SafeArea(
         child: RefreshIndicator(
@@ -71,44 +81,75 @@ class _PlaceViewState extends State<PlaceView> {
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.black,
-
                             ),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: const Icon(
-                          Icons.keyboard_arrow_left,
+                            Icons.keyboard_arrow_left,
                             color: Colors.black,
                             size: 30.0,
                           ),
                         ),
                         title: Container(
                           margin: const EdgeInsets.only(top: 20.0, right: 30.0),
-                          child: const Text('Mansourah', style: TextStyle(
-                            fontSize: 25.0
-                          ),),
+                          child: const Text(
+                            'Mansourah',
+                            style: TextStyle(fontSize: 25.0),
+                          ),
                         ),
                         trailing: Container(
                           margin: const EdgeInsets.only(top: 20.0, right: 30.0),
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.black,
-
                             ),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          child: const Icon(
-                            Icons.hearing_rounded,
-                            color: Colors.black,
-                            size: 30.0,
+                          child: GestureDetector(
+                            onTap: () {
+                              Alert(
+                                  context: context,
+                                  title: "Weather",
+                                  content: Column(
+                                    children: [
+                                      ListTile(
+                                        title: const Text('Weather'),
+                                        trailing: Image.network(iconURL!),
+                                      ),
+                                      ListTile(
+                                        title: const Text('Temperature'),
+                                        trailing: Text('$temp°'),
+                                      ),
+                                      ListTile(
+                                        title: const Text('Description'),
+                                        trailing: Text('$weatherDescription'),
+                                      ),
+                                    ],
+                                  ),
+                                  buttons: [
+                                    DialogButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text(
+                                        "Close",
+                                        style: TextStyle(color: Colors.white, fontSize: 20),
+                                      ),
+                                    )
+                                  ]).show();
+                            },
+                            child: Image.asset(
+                              'images/img.png',
+                              width: 50.0,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
                     ),
-
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30.0),
+                  padding:
+                      const EdgeInsets.only(left: 30.0, right: 30.0, top: 30.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20.0),
                     child: Image.asset('images/grande.jpg'),
