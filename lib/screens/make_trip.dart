@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/path_screen.dart';
 
+
+
 class MakeTrip extends StatefulWidget {
   const MakeTrip({Key? key}) : super(key: key);
   static const String id = 'mak_trip';
@@ -23,6 +25,13 @@ class _MakeTripState extends State<MakeTrip> {
   Color colorRural = kColorNotSelected;
   Color colorStadium = kColorNotSelected;
   Color colorPark = kColorNotSelected;
+
+  Color colorTextMonument = kTextColorNotSelected;
+  Color colorTextMosque = kTextColorNotSelected;
+  Color colorTextMuseum = kTextColorNotSelected;
+  Color colorTextRural = kTextColorNotSelected;
+  Color colorTextStadium = kTextColorNotSelected;
+  Color colorTextPark = kTextColorNotSelected;
 
   bool isChecked = false;
 

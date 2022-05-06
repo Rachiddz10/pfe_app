@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pfe_app/constants.dart';
-import 'package:pfe_app/screens/place_view.dart';
 
-import '../components/get_list_child.dart';
 
 class Explore extends StatefulWidget {
   const Explore({Key? key}) : super(key: key);
@@ -13,7 +10,13 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
-  List<Widget> list = getListChild();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('hello');
+  }
+
+  /*List<Widget> list = getListChild();
 
   List<Widget> modifyListChild() {
     list.add(
@@ -137,5 +140,5 @@ class _ExploreState extends State<Explore> {
         ),
       ),
     );
-  }
+  }*/
 }

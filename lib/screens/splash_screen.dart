@@ -14,87 +14,97 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Travel around the world'),
-        centerTitle: true,
-      ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: const AssetImage('images/mansorah.jpg'),
+              colorFilter: ColorFilter.mode(Colors.green.withOpacity(0.2), BlendMode.saturation),
+              fit: BoxFit.cover,
+            ),
+          ),
+          constraints: const BoxConstraints.expand(),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            verticalDirection: VerticalDirection.up,
             children: [
-              Flexible(
-                flex: 5,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 20.0, horizontal: 25.0),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('images/mansorah.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    constraints: BoxConstraints.loose(const Size.fromHeight(400)),
-                  ),
-                ),
-              ),
-              Flexible(
-                child: SizedBox(
-                  child: AnimatedTextKit(
-                    animatedTexts: [
-                      TypewriterAnimatedText(
-                        'Tlemcen',
-                        textStyle: const TextStyle(
-                          fontSize: 45.0,
-                          fontWeight: FontWeight.w900,
-                        ),
-                        textAlign: TextAlign.end,
-                        speed: const Duration(milliseconds: 250),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0,right: 20.0, top: 25.0, bottom: 10.0),
-                  child: SizedBox(
-                    child: AnimatedTextKit(
-                      animatedTexts: [
-                        WavyAnimatedText(
-                          'A breif welcoming description',
-                          textStyle: const TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: SizedBox(
+                          child: AnimatedTextKit(
+                            animatedTexts: [
+                              TypewriterAnimatedText(
+                                'Tlemcen',
+                                textStyle: const TextStyle(
+                                  fontSize: 45.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                                textAlign: TextAlign.end,
+                                speed: const Duration(milliseconds: 250),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                      isRepeatingAnimation: true,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30.0),
-                child: Material(
-                  elevation: 5.0,
-                  color: const Color(0xFF757575),
-                  borderRadius: BorderRadius.circular(30.0),
-                  child: MaterialButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, MainScreen.id);
-                    },
-                    minWidth: 150.0,
-                    height: 42.0,
-                    child: const Text(
-                      'Visit your Town',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 35.0,
                       ),
                     ),
-                  ),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30.0),
+                        child: SizedBox(
+                          child: AnimatedTextKit(
+                            animatedTexts: [
+                              WavyAnimatedText(
+                                'A breif welcoming description',
+                                textStyle: const TextStyle(
+                                  fontSize: 22.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                            isRepeatingAnimation: true,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 100.0, top: 50.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Material(
+                            elevation: 5.0,
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: MaterialButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, MainScreen.id);
+                              },
+                              minWidth: 150.0,
+                              height: 42.0,
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Visit your Town',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 30.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
