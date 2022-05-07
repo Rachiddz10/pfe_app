@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
         Filter.id : (context) => const Filter(),
         SeeMore.id : (context) => const SeeMore(),
         PathScreen.id : (context) => const PathScreen(),
+        //PlaceMap.id : (context) =>  const PlaceMap(locati),
       },
     );
   }
