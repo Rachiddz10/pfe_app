@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/gallery.dart';
 import 'package:http/http.dart' as http;
 import 'package:pfe_app/core/geo_location.dart';
 import 'package:pfe_app/screens/place_map.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
+import 'dart:io' show Platform;
 
 final List<String> imgList = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -49,6 +50,14 @@ class PlaceView extends StatefulWidget {
 }
 
 class _PlaceViewState extends State<PlaceView> {
+
+  //------------- Text to speech -------
+  FlutterTts? _flutterTts;
+  String? description = kText.data;
+  bool isPlaying = false;
+
+
+  //-----------------------------------
   double? temperature;
   int? temp;
   String? weatherDescription;
@@ -77,21 +86,104 @@ class _PlaceViewState extends State<PlaceView> {
     print('latitude = ${location.lat}\nlongitude = ${location.long}');
   }
 
+
+
   @override
   void initState() {
     super.initState();
+    initializeTts();
     getLocation();
     getDataMeteo();
   }
 
+  Future _getDefaultEngine() async {
+    var engine = await _flutterTts!.getDefaultEngine;
+    if (engine != null) {
+      print(engine);
+    }
+  }
+
+  Future _speak(String text) async {
+    if (text.isNotEmpty) {
+      var result = await _flutterTts!.speak(text);
+      if (result == 1) {
+        setState(() {
+          isPlaying = true;
+        });
+      }
+    }
+  }
+
+  Future _stop() async {
+    var result = await _flutterTts!.stop();
+    if (result == 1) {
+      setState(() {
+        isPlaying = false;
+      });
+    }
+  }
+
+  initializeTts() async {
+    _flutterTts = FlutterTts();
+    await _flutterTts!.setLanguage("en-US");
+
+    /*if (Platform.isAndroid) {
+      _getDefaultEngine();
+    }*/
+
+    _flutterTts!.setStartHandler(() {
+      setState(() {
+        isPlaying = true;
+      });
+    });
+
+    _flutterTts!.setCompletionHandler(() {
+      setState(() {
+        isPlaying = false;
+      });
+    });
+
+    _flutterTts!.setCancelHandler(() {
+      setState(() {
+        isPlaying = false;
+      });
+    });
+
+    _flutterTts!.setErrorHandler((err) {
+      setState(() {
+        print("error occurred: " + err);
+        isPlaying = false;
+      });
+    });
+
+    _flutterTts!.setPauseHandler(() {
+      setState(() {
+        isPlaying = false;
+      });
+    });
+
+    _flutterTts!.setContinueHandler(() {
+      setState(() {
+        isPlaying = true;
+      });
+    });
+  }
+
   Future<void> refresh() async {
     Future.delayed(const Duration(seconds: 1));
+    print(description);
     Navigator.pop(context);
     Navigator.pushNamed(context, PlaceView.id);
   }
 
   int _current = 0;
   final CarouselController _controller = CarouselController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _flutterTts!.stop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -301,21 +393,31 @@ class _PlaceViewState extends State<PlaceView> {
                   const SizedBox(
                     height: 20.0,
                   ),
-                  Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Mansorah',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Card(
+                      color: const Color(0xFFEEB5C9),
+                      child: ListTile(
+                        leading: const Text(
+                          'Press on the icon to Play/Stop',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      //title: Text(temp!.toString()),
-                      trailing: IconButton(
-                        icon: const Icon(
-                          Icons.surround_sound_outlined,
-                          color: Colors.red,
+                        //title: Text(temp!.toString()),
+                        trailing: IconButton(
+                          icon: isPlaying ? const Icon(
+                            Icons.stop_circle_outlined,
+                            color: Colors.black,
+                          ) :
+                          const Icon(
+                          Icons.play_circle_fill_outlined,
+                          color: Colors.green,
                         ),
-                        onPressed: () {},
+                          onPressed: () {
+                            isPlaying ? _stop() : _speak(description!);
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -336,5 +438,9 @@ class _PlaceViewState extends State<PlaceView> {
         ),
       ),
     );
+  }
+
+  void setTtsLanguage() async {
+    await _flutterTts!.setLanguage("en-US");
   }
 }
