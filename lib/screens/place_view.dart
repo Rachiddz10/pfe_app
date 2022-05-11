@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:pfe_app/apis/cities_api.dart';
 import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/gallery.dart';
 import 'package:http/http.dart' as http;
 import 'package:pfe_app/core/geo_location.dart';
 import 'package:pfe_app/screens/place_map.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'dart:io' show Platform;
 
 final List<String> imgList = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -96,12 +96,12 @@ class _PlaceViewState extends State<PlaceView> {
     getDataMeteo();
   }
 
-  Future _getDefaultEngine() async {
+  /*Future _getDefaultEngine() async {
     var engine = await _flutterTts!.getDefaultEngine;
     if (engine != null) {
       print(engine);
     }
-  }
+  }*/
 
   Future _speak(String text) async {
     if (text.isNotEmpty) {
@@ -374,6 +374,7 @@ class _PlaceViewState extends State<PlaceView> {
                           borderRadius: BorderRadius.circular(15.0),
                           child: MaterialButton(
                             onPressed: () {
+                              CitiesApi().fetchAll();
                               Navigator.pushNamed(context, Gallery.id);
                             },
                             minWidth: 150.0,

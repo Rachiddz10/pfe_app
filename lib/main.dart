@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pfe_app/screens/city_screen.dart';
 import 'package:pfe_app/screens/explore.dart';
 import 'package:pfe_app/screens/filter.dart';
 import 'package:pfe_app/screens/gallery.dart';
@@ -20,9 +21,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Visit Tlemcen',
-      initialRoute: SplashScreen.id,
+      initialRoute: CityScreen.id,
       routes: {
-        SplashScreen.id : (context) => const SplashScreen(),
+        CityScreen.id : (context) => const CityScreen(),
+        SplashScreen.id : (context) => const SplashScreen(idNumber: 1, name: 'hello',),
         MainScreen.id : (context) => const MainScreen(),
         PlaceView.id : (context) => const PlaceView(),
         Explore.id : (context) => const Explore(),

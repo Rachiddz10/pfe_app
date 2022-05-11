@@ -3,16 +3,36 @@ import 'package:pfe_app/screens/main_screen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({required this.idNumber, required this.name, Key? key}) : super(key: key);
   static const String id = 'splash_screen';
+  final int idNumber;
+  final String name;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  //------- City api (id + name) ------
+  int? id;
+  String? name;
+  void initializeData() {
+    id = widget.idNumber;
+    name = widget.name;
+  }
+
+  //-----------------------------------
+
+  @override
+  void initState() {
+    super.initState();
+    initializeData();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(id);
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -39,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           child: AnimatedTextKit(
                             animatedTexts: [
                               TypewriterAnimatedText(
-                                'Tlemcen',
+                                '$name',
                                 textStyle: const TextStyle(
                                   fontSize: 45.0,
                                   color: Colors.white,
@@ -92,7 +112,7 @@ class _SplashScreenState extends State<SplashScreen> {
                               child: const Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  'Visit your Town',
+                                  'Visit this Town',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 30.0,
