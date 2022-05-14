@@ -14,4 +14,5 @@ const kColorSelected = Color(0xFF5470FF);
 const kTextColorSelected = Colors.white;
 const kTextColorNotSelected = Colors.black;
 const kColorNotSelected = Color(0xFFD7CCC8);
-const kURl = 'http://192.168.1.6/REST';
+const kURl = 'https://mansorah.cf/REST';
+const kURlForImage = 'https://mansorah.cf';

@@ -20,6 +20,8 @@ class PlaceMapState extends State<PlaceMap> {
   late double? lati = widget.location.lat;
   late double? longi = widget.location.long;
 
+
+
   final Set<Marker> _markers = <Marker>{};
   final Set<Polygon> _polygons = <Polygon>{};
   final Set<Polyline> _polylines = <Polyline>{};
@@ -105,12 +107,6 @@ class PlaceMapState extends State<PlaceMap> {
         //initialCameraPosition: getPosition(),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
-        },
-        onTap: (point) {
-          setState(() {
-            polygonLatLngs.add(point);
-            _setPolygon();
-          });
         },
       ),
       floatingActionButton: FloatingActionButton.extended(

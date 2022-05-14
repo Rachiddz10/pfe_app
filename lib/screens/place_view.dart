@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:pfe_app/apis/cities_api.dart';
 import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/gallery.dart';
 import 'package:http/http.dart' as http;
@@ -374,7 +373,6 @@ class _PlaceViewState extends State<PlaceView> {
                           borderRadius: BorderRadius.circular(15.0),
                           child: MaterialButton(
                             onPressed: () {
-                              CitiesApi().fetchAll();
                               Navigator.pushNamed(context, Gallery.id);
                             },
                             minWidth: 150.0,
