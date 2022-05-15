@@ -69,9 +69,9 @@ class _CityScreenState extends State<CityScreen> {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
                                 return SplashScreen(
-                                  idNumber: e.id,
-                                  name: e.title,
-                                  image: e.image,
+                                  idNumber: e.id!,
+                                  name: e.title!,
+                                  image: e.image!,
                                 );
                               }));
                             },
@@ -99,7 +99,7 @@ class _CityScreenState extends State<CityScreen> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: Text(
-                                        e.title,
+                                        e.title!,
                                         style: const TextStyle(
                                           fontSize: 25.0,
                                           color: Colors.white,

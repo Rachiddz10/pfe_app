@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:pfe_app/components/place_id.dart';
 import 'package:pfe_app/screens/make_trip.dart';
 import 'package:pfe_app/screens/explore.dart';
 import 'dart:math';
 import 'package:pfe_app/screens/place_view.dart';
 
+import '../components/place_thumb.dart';
+
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key, this.idNumber}) : super(key: key);
+  const MainScreen({Key? key, this.idNumber, this.list, this.listOfThumbs}) : super(key: key);
   static const String id = 'main_screen';
   final int? idNumber;
+  final List<PlaceCard>? list;
+  final List<PlaceThumb>? listOfThumbs;
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -20,7 +25,7 @@ class _MainScreenState extends State<MainScreen> {
     var subheading =
         '${(ran.nextInt(3) + 1).toString()} bed, ${(ran.nextInt(2) + 1).toString()} bath, ${(ran.nextInt(10) + 7).toString()}00 sqft';
     var cardImage = NetworkImage(
-        'https://source.unsplash.com/random/800x600?house&' + ran.nextInt(100).toString());
+        'https://source.unsplash.com/random/800x600?house&${ran.nextInt(100).toString()}');
     var supportingText =
         'Beautiful home to rent, recently refurbished with modern appliances...';
     return GestureDetector(
@@ -71,29 +76,18 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  //------- place api ------
-  /*dynamic json;
+  //------- City api (id + name) ------
   int? id;
+  List<PlaceCard>? list;
+  List<PlaceThumb>? listOfThumbs;
+
   void initializeData() {
     id = widget.idNumber;
-    getPlaces();
+    list = widget.list;
+    listOfThumbs = widget.listOfThumbs;
   }
 
-  void getPlaces() async {
-    json = await PlacesApi().fetchAll(id!);
-    List<PlaceNumber> numberOfPlaces = PlacesApi().getAllPlaces(json);
-    for (int i = 0; i < json.length; i++) {
-      print(numberOfPlaces[i].id);
-    }
-  }*/
-
   //-----------------------------------
-
-  /*@override
-  void initState() {
-    super.initState();
-    initializeData();
-  }*/
 
   @override
   Widget build(BuildContext context) {

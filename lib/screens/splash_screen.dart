@@ -1,29 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:pfe_app/apis/places_api.dart';
+import 'package:pfe_app/apis/places_thumb_apis.dart';
 import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/main_screen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
+import '../components/place_id.dart';
+import '../components/place_thumb.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({required this.idNumber, required this.name, required this.image, Key? key}) : super(key: key);
+  const SplashScreen(
+      {required this.idNumber,
+      required this.name,
+      required this.image,
+      Key? key})
+      : super(key: key);
   static const String id = 'splash_screen';
-  final int idNumber;
-  final String name;
-  final String image;
+  final int? idNumber;
+  final String? name;
+  final String? image;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   //------- City api (id + name) ------
   int? id;
   String? name;
   String? image;
+
   void initializeData() {
     id = widget.idNumber;
     name = widget.name;
     image = widget.image;
+  }
+
+  //-----------------------------------
+
+  dynamic json;
+  List<PlaceCard> listPlaceCard = [];
+  List<PlaceThumb> listPlaceThumb = [];
+
+  Future<void> getPlacesApi(int id) async {
+    listPlaceCard = [];
+    json = await PlacesApi().fetchAll(id);
+    List<Place> listOfPlacesId = PlacesApi().getAllPlaces(json);
+    for (int i = 0; i < json.length; i++) {
+      listPlaceCard.add(PlaceCard(id: listOfPlacesId[i].id));
+    }
+    /*await Future.delayed(const Duration(seconds: 3));
+    if (!mounted) return;
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CityScreen(list: myCard)));*/
+  }
+
+  Future<List<PlaceThumb>> getPlacesThumb(int id) async {
+    listPlaceThumb = [];
+    for (int j = 0; j < listPlaceCard.length; j++) {
+      List<PlaceThumb> listOfPlaces =
+          await PlacesThumbs().fetchAll(id, listPlaceCard[j].id!);
+      for (int i = 0; i < listOfPlaces.length; i++) {
+        listPlaceThumb.add(PlaceThumb(
+            name: listOfPlaces[i].name,
+            summary: listOfPlaces[i].summary,
+            thumb: listOfPlaces[i].thumb));
+      }
+    }
+    return listPlaceThumb;
   }
 
   //-----------------------------------
@@ -42,7 +87,8 @@ class _SplashScreenState extends State<SplashScreen> {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage('$kURlForImage$image'),
-              colorFilter: ColorFilter.mode(Colors.green.withOpacity(0.2), BlendMode.saturation),
+              colorFilter: ColorFilter.mode(
+                  Colors.green.withOpacity(0.2), BlendMode.saturation),
               fit: BoxFit.cover,
             ),
           ),
@@ -78,7 +124,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                     Flexible(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 30.0),
+                        padding: const EdgeInsets.only(
+                            left: 30.0, right: 30.0, top: 30.0),
                         child: SizedBox(
                           child: AnimatedTextKit(
                             animatedTexts: [
@@ -107,9 +154,14 @@ class _SplashScreenState extends State<SplashScreen> {
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(10.0),
                             child: MaterialButton(
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return MainScreen(idNumber: id);
+                              onPressed: () async {
+                                await getPlacesApi(id!);
+                                listPlaceThumb = await getPlacesThumb(id!);
+                                if (!mounted) return;
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return MainScreen(
+                                      idNumber: id, list: listPlaceCard, listOfThumbs: listPlaceThumb,);
                                 }));
                               },
                               minWidth: 150.0,

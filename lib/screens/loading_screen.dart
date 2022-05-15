@@ -17,6 +17,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   List<MyCard> myCard = [];
 
   void getCities() async {
+    myCard = [];
     json = await CitiesApi().fetchAll();
     List<City> listOfCities = CitiesApi().getAllCities(json);
     for (int i = 0; i < json.length; i++) {

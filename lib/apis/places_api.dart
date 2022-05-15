@@ -5,9 +5,8 @@ import 'package:pfe_app/constants.dart';
 
 class PlacesApi {
   List<Place> listOfPlaces = [];
-
-  Future fetchAll(int id, int idPlace) async {
-    final http.Response response = await http.get(Uri.parse('$kURl/$id/$idPlace/info'));
+  Future fetchAll(int id) async {
+    final http.Response response = await http.get(Uri.parse('$kURl/$id/places'));
     var json = jsonDecode(response.body);
     if (response.statusCode == 200) {
       return json;
@@ -22,8 +21,8 @@ class PlacesApi {
   }
 */
   List<Place> getAllPlaces(var json) {
-    for (int i = 1; i <= json.length; i++) {
-      listOfPlaces.add(Place.fromJson(json[i - 1]));
+    for (int i = 0; i < json.length; i++) {
+      listOfPlaces.add(Place.fromJson(json[i]));
     }
 
     return listOfPlaces;

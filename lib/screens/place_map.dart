@@ -7,7 +7,7 @@ import '../core/geo_location.dart';
 
 class PlaceMap extends StatefulWidget {
   static const String id = 'PlaceMap';
-  final Location location;
+  final Location? location;
 
   const PlaceMap({required this.location, Key? key}) : super(key: key);
 
@@ -17,8 +17,8 @@ class PlaceMap extends StatefulWidget {
 
 class PlaceMapState extends State<PlaceMap> {
   final Completer<GoogleMapController> _controller = Completer();
-  late double? lati = widget.location.lat;
-  late double? longi = widget.location.long;
+  late double? lati = widget.location!.lat;
+  late double? longi = widget.location!.long;
 
 
 
@@ -27,7 +27,7 @@ class PlaceMapState extends State<PlaceMap> {
   final Set<Polyline> _polylines = <Polyline>{};
   List<LatLng> polygonLatLngs = <LatLng>[];
 
-  int _polygonIdCounter = 1;
+  //int _polygonIdCounter = 1;
   int _polylineIdCounter = 1;
 
   CameraPosition getPosition() {
@@ -61,7 +61,7 @@ class PlaceMapState extends State<PlaceMap> {
     });
   }
 
-  void _setPolygon() {
+  /*void _setPolygon() {
     final String polygonIdVal = 'polygon_$_polygonIdCounter';
     _polygonIdCounter++;
 
@@ -71,7 +71,7 @@ class PlaceMapState extends State<PlaceMap> {
       strokeWidth: 3,
       fillColor: Colors.transparent,
     ));
-  }
+  }*/
 
   void _setPolyline(List<PointLatLng> points) {
     final String polylineIdVal = 'polyline_$_polylineIdCounter';

@@ -82,7 +82,7 @@ class _PlaceViewState extends State<PlaceView> {
 
   void getLocation() async {
     await location.getCurrentLocation();
-    print('latitude = ${location.lat}\nlongitude = ${location.long}');
+    //print('latitude = ${location.lat}\nlongitude = ${location.long}');
   }
 
 
@@ -150,7 +150,7 @@ class _PlaceViewState extends State<PlaceView> {
 
     _flutterTts!.setErrorHandler((err) {
       setState(() {
-        print("error occurred: " + err);
+        print("error occurred: $err");
         isPlaying = false;
       });
     });
@@ -170,7 +170,6 @@ class _PlaceViewState extends State<PlaceView> {
 
   Future<void> refresh() async {
     Future.delayed(const Duration(seconds: 1));
-    print(description);
     Navigator.pop(context);
     Navigator.pushNamed(context, PlaceView.id);
   }

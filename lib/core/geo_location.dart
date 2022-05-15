@@ -23,9 +23,8 @@ class Location {
       lat = position.latitude;
     }
     // You can request multiple permissions at once.
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.location,
-      //Permission.storage,
+    await [
+      Permission.location,    //Permission.storage,
     ].request();
     //print(statuses[Permission.location]);
     Position position = await Geolocator.getCurrentPosition(
