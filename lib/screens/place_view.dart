@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/gallery.dart';
 import 'package:http/http.dart' as http;
 import 'package:pfe_app/core/geo_location.dart';
 import 'package:pfe_app/screens/place_map.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
+import '../components/place_structure.dart';
 
 final List<String> imgList = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -35,14 +36,14 @@ final List<Widget> imageSliders = imgList
 
 
 const apiKeyWeather = Text('a1173da81b738a5fdc4ad146f555d9ab');
-
 const apiKeyGoogleNotRestricted = Text('AIzaSyAFvqUhsOngyoyEokDFiN84WO-4MwWKpmo');
 const apiKeyGoogle = Text('AIzaSyBAGR7tefhwB4thG7lXUskeyfHfa2avcUI');
 
 
 class PlaceView extends StatefulWidget {
-  const PlaceView({Key? key}) : super(key: key);
+  const PlaceView({this.placeInfo, Key? key}) : super(key: key);
   static const String id = 'place_view';
+  final PlaceStructure? placeInfo;
 
   @override
   State<PlaceView> createState() => _PlaceViewState();
@@ -52,7 +53,7 @@ class _PlaceViewState extends State<PlaceView> {
 
   //------------- Text to speech -------
   FlutterTts? _flutterTts;
-  String? description = kText.data;
+  String? description;
   bool isPlaying = false;
 
 
@@ -85,6 +86,8 @@ class _PlaceViewState extends State<PlaceView> {
     //print('latitude = ${location.lat}\nlongitude = ${location.long}');
   }
 
+  //--------------- Api of place ---------
+  PlaceStructure? list;
 
 
   @override
@@ -93,7 +96,11 @@ class _PlaceViewState extends State<PlaceView> {
     initializeTts();
     getLocation();
     getDataMeteo();
+    list = widget.placeInfo;
+    description = list!.description;
   }
+
+  //----------------------------------
 
   /*Future _getDefaultEngine() async {
     var engine = await _flutterTts!.getDefaultEngine;
@@ -150,7 +157,6 @@ class _PlaceViewState extends State<PlaceView> {
 
     _flutterTts!.setErrorHandler((err) {
       setState(() {
-        print("error occurred: $err");
         isPlaying = false;
       });
     });
@@ -228,9 +234,9 @@ class _PlaceViewState extends State<PlaceView> {
                           ),
                           title: Container(
                             margin: const EdgeInsets.only(top: 20.0, right: 30.0),
-                            child: const Text(
-                              'Mansourah',
-                              style: TextStyle(fontSize: 25.0),
+                            child: Text(
+                              '${list!.name}',
+                              style: const TextStyle(fontSize: 25.0),
                             ),
                           ),
                           trailing: GestureDetector(
@@ -426,7 +432,7 @@ class _PlaceViewState extends State<PlaceView> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 20.0),
-                      child: kText,
+                      child: Text('${list!.description}'),
                     ),
                   ),
                 ],

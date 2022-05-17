@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pfe_app/screens/city_screen.dart';
 
 import '../apis/cities_api.dart';
+import '../components/city.dart';
 import '../components/my_card.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -18,9 +19,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   void getCities() async {
     myCard = [];
-    json = await CitiesApi().fetchAll();
-    List<City> listOfCities = CitiesApi().getAllCities(json);
-    for (int i = 0; i < json.length; i++) {
+    List<City> listOfCities = await CitiesApi().fetchAll();
+    for (int i = 0; i < listOfCities.length; i++) {
       myCard.add(MyCard(id: listOfCities[i].id, title: listOfCities[i].name, image: listOfCities[i].picture));
     }
     await Future.delayed(const Duration(seconds: 3));

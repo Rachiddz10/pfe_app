@@ -14,5 +14,5 @@ const kColorSelected = Color(0xFF5470FF);
 const kTextColorSelected = Colors.white;
 const kTextColorNotSelected = Colors.black;
 const kColorNotSelected = Color(0xFFD7CCC8);
-const kURl = 'https://mansorah.cf/REST';
-const kURlForImage = 'https://mansorah.cf';
+const kURl = 'http://pfeweb.ga/REST';
+const kURlForImage = 'http://pfeweb.ga';
