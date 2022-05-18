@@ -14,5 +14,7 @@ const kColorSelected = Color(0xFF5470FF);
 const kTextColorSelected = Colors.white;
 const kTextColorNotSelected = Colors.black;
 const kColorNotSelected = Color(0xFFD7CCC8);
-const kURl = 'http://pfeweb.ga/REST';
-const kURlForImage = 'http://pfeweb.ga';
+const kURl = 'https://www.pfeweb.ml/REST';
+const kURlForImage = 'https://www.pfeweb.ml';
+
+const String apiKeyWeather = 'a1173da81b738a5fdc4ad146f555d9ab&units=metric';

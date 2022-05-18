@@ -30,7 +30,7 @@ class PlaceInfo {
       }
     } catch (e) {
     List<PlaceStructure> listPlacesInfo = [];
-    listPlacesInfo.add(PlaceStructure(idPlace: 0, name: 'Error', description: 'Error Fetching data', thumb: 'storage/media/1652790063.maqam.jpg', price: 0, time: 0, lat: '', long: '', summary: ''));
+    listPlacesInfo.add(PlaceStructure(idPlace: 0, name: 'Error', description: 'Error Fetching data', thumb: 'storage/media/1652570202_fichier_produit_21.jpg', price: 0, time: 0, lat: '', long: '', summary: ''));
       return listPlacesInfo;
     }
   }

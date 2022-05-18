@@ -32,4 +32,9 @@ class Location {
     long = position.longitude;
     lat = position.latitude;
   }
+
+  void setLatLng(String latitude, String longitude) {
+    lat = double.parse(latitude);
+    long = double.parse(longitude);
+  }
 }

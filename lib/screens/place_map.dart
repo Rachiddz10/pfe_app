@@ -8,8 +8,9 @@ import '../core/geo_location.dart';
 class PlaceMap extends StatefulWidget {
   static const String id = 'PlaceMap';
   final Location? location;
+  final Location? sitePosition;
 
-  const PlaceMap({required this.location, Key? key}) : super(key: key);
+  const PlaceMap({required this.sitePosition, required this.location, Key? key}) : super(key: key);
 
   @override
   State<PlaceMap> createState() => PlaceMapState();
@@ -17,10 +18,13 @@ class PlaceMap extends StatefulWidget {
 
 class PlaceMapState extends State<PlaceMap> {
   final Completer<GoogleMapController> _controller = Completer();
-  late double? lati = widget.location!.lat;
-  late double? longi = widget.location!.long;
-
-
+  double? lati;
+  double? longi;
+  double? siteLatitude;
+  double? siteLongitude;
+  String? distance;
+  bool taped = false;
+  static int markerID = 1;
 
   final Set<Marker> _markers = <Marker>{};
   final Set<Polygon> _polygons = <Polygon>{};
@@ -31,15 +35,15 @@ class PlaceMapState extends State<PlaceMap> {
   int _polylineIdCounter = 1;
 
   CameraPosition getPosition() {
-    return const CameraPosition(
-        target: LatLng(34.88387799959821, -1.310524818298552),
+    return CameraPosition(
+        target: LatLng(siteLatitude!, siteLongitude!),
         zoom: 19.151926040649414);
   }
 
   CameraPosition getCameraPosition() {
-    return const CameraPosition(
+    return CameraPosition(
         bearing: 192.8334901395799,
-        target: LatLng(34.88387799959821, -1.310524818298552),
+        target: LatLng(siteLatitude!, siteLongitude!),
         tilt: 59.440717697143555,
         zoom: 19.151926040649414);
   }
@@ -47,17 +51,26 @@ class PlaceMapState extends State<PlaceMap> {
   @override
   void initState() {
     super.initState();
-
+    lati = widget.location!.lat;
+    longi = widget.location!.long;
+    siteLatitude = widget.sitePosition!.lat;
+    siteLongitude = widget.sitePosition!.long;
     //_setMarker(const LatLng(37.42796133580664, -122.085749655962));
-    _setMarker(const LatLng(34.88387799959821, -1.310524818298552),);
+    _setMarker(LatLng(siteLatitude!, siteLongitude!),);
+  }
+
+  @override
+  dispose() {
+    super.dispose();
   }
 
   void _setMarker(LatLng point) {
     setState(() {
       _markers.add(Marker(
-        markerId: const MarkerId('marker'),
+        markerId: MarkerId('marker$markerID'),
         position: point,
       ));
+      markerID++;
     });
   }
 
@@ -113,8 +126,10 @@ class PlaceMapState extends State<PlaceMap> {
         onPressed: () async {
           var directions = await LocationService().getDirectionWithLatLng(
             LatLng(lati!, longi!),
-            const LatLng(34.88387799959821, -1.310524818298552),
+            LatLng(siteLatitude!, siteLongitude!),
           );
+          distance = directions['distance'];
+          taped = true;
           _goToPlace(
             directions['start_location']['lat'],
             directions['start_location']['lng'],
@@ -123,7 +138,7 @@ class PlaceMapState extends State<PlaceMap> {
           );
           _setPolyline(directions['polyline_decoded']);
         },
-        label: const Text('itinerary'),
+        label: taped ? Text('itinerary\'s distance = $distance') : const Text('itinerary'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );

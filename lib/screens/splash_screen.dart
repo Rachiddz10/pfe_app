@@ -4,7 +4,7 @@ import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/main_screen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
+import 'dart:async';
 import '../apis/places_info_api.dart';
 import '../components/place.dart';
 import '../components/place_id.dart';
@@ -49,8 +49,6 @@ class _SplashScreenState extends State<SplashScreen> {
   dynamic json;
   List<PlaceStructure> listPlaceInfo = [];
   List<PlaceCard> listPlaceCard = [];
-  //List<PlaceThumb> listPlaceThumb = [];
-
 
   Future<void> getPlacesApi(int id) async {
     listPlaceCard = [];
@@ -190,6 +188,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                       listOfPlaces: listPlaceInfo,
                                     );
                                   }));
+                                  Future.delayed(const Duration(seconds: 3));
                                   setState(() {
                                     showSpinner = false;
                                   });
