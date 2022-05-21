@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pfe_app/constants.dart';
+import 'package:pfe_app/components/language.dart';
 import 'package:pfe_app/screens/splash_screen.dart';
 import '../components/my_card.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CityScreen extends StatefulWidget {
   static const String id = 'city_screen';
@@ -28,7 +30,9 @@ class _CityScreenState extends State<CityScreen> {
       backgroundColor: const Color(0xFFF6F7F9),
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        title: const Text('Travel'),
+        title: Text(
+          AppLocalizations.of(context)!.travel,
+        ),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -44,11 +48,11 @@ class _CityScreenState extends State<CityScreen> {
           constraints: const BoxConstraints.expand(),
           child: Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
                 child: Text(
-                  'Choose the city',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.chooseTheCity,
+                  style: const TextStyle(
                     fontSize: 30.0,
                     color: Colors.black54,
                   ),
@@ -66,6 +70,7 @@ class _CityScreenState extends State<CityScreen> {
                         .map(
                           (e) => GestureDetector(
                             onTap: () {
+                              Language.setLanguage(Localizations.localeOf(context));
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
                                 return SplashScreen(

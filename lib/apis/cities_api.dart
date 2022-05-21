@@ -16,7 +16,7 @@ class CitiesApi {
       return listOfCities;
     } else {
       List<City> listOfCities = [];
-      listOfCities.add(City(name: 'Error Fetching', id: 0, picture: '/storage/media/1652570202_fichier_produit_21.jpg'));
+      listOfCities.add(City(name: 'Error Fetching', id: 0, picture: '/storage/media/placeholder.jpg'));
       return listOfCities;
     }
   }

@@ -114,3 +114,51 @@
     return listHorizontal;
   }
  */
+
+/*
+//------ PLace Thumb API
+import 'dart:convert';
+import '../components/place_thumb.dart';
+import 'package:http/http.dart' as http;
+import 'package:pfe_app/constants.dart';
+
+class PlacesThumbs {
+
+  Future<List<PlaceThumb>> fetchAll(int id, int idNumber) async {
+    List<PlaceThumb> listPlacesThumb = [];
+    final http.Response response = await http.get(Uri.parse('$kURl/$id/$idNumber/thumb'));
+    final http.Response responseMeta = await http.get(Uri.parse('$kURl/$id/$idNumber/meta'));
+    var json = jsonDecode(response.body);
+    var jsonMeta = jsonDecode(responseMeta.body);
+    if (response.statusCode == 200 && responseMeta.statusCode == 200) {
+      listPlacesThumb.add(PlaceThumb.fromJson(json, jsonMeta));
+      return listPlacesThumb;
+    } else {
+      throw Exception(' Failed to load Places');
+    }
+  }
+}*/
+
+
+/*
+//------ PLace Thumb
+class PlaceThumb {
+  final String? name;
+  final String? summary;
+  final String? thumb;
+  final int? price;
+  final int? time;
+
+  PlaceThumb({required this.name, required this.summary, required this.thumb, required this.price, required this.time});
+
+  factory PlaceThumb.fromJson(Map<String, dynamic> json, List<dynamic> jsonMeta) {
+    PlaceThumb place = PlaceThumb(
+      name: json['name'],
+      summary: json['summary'],
+      thumb: json['thumb'],
+      price: jsonMeta[0]['price'],
+      time: jsonMeta[0]['time'],
+    );
+    return place;
+  }
+}*/

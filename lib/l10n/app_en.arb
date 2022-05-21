@@ -1,0 +1,115 @@
+{
+    "travel": "Travel",
+    "@travel": {
+        "description": "The current Language"
+    },
+    "chooseTheCity": "Choose the city",
+    "@chooseTheCity": {
+        "description": "choosing city"
+    },
+    "visitThisTown": "Visit This Town",
+    "@visitThisTown": {
+        "description": "Visiting town"
+    },
+    "search": "Search",
+    "@search": {
+        "description": "Searching"
+    },
+    "explore": "Explore",
+    "@explore": {
+        "description": "Exploring"
+    },
+    "makeTrip": "Make Trip",
+    "@makeTrip": {
+        "description": "making a Trip"
+    },
+    "nearbyPlaces": "Nearby Places",
+    "@nearbyPlaces": {
+        "description": "nearbyPlaces"
+    },
+    "popularPlaces": "Popular Places",
+    "@popularPlaces": {
+        "description": "popularPlaces"
+    },
+    "pricing": "DZD for entry",
+    "@pricing": {
+        "description": "pricing"
+    },
+    "noPlacesFound": "No places inserted in this town",
+    "@noPlacesFound": {
+        "description": "noPlacesFound"
+    },
+    "gallery": "Gallery",
+    "@gallery": {
+        "description": "gallery"
+    },
+    "visit": "Visit",
+    "@visit": {
+        "description": "visit"
+    },
+    "pricePlaceView": "Price",
+    "@pricePlaceView": {
+        "description": "pricePlaceView"
+    },
+    "pricePlaceViewResult": "DZD",
+    "@pricePlaceViewResult": {
+        "description": "pricePlaceViewResult"
+    },
+    "timePlaceView": "Time needed for visit",
+    "@timePlaceView": {
+        "description": "timePlaceView"
+    },
+    "timePlaceViewResult": "minute(s)",
+    "@timePlaceViewResult": {
+        "description": "timePlaceViewResult"
+    },
+    "playStopAudio": "Press on the icon to Play/Stop",
+    "@playStopAudio": {
+        "description": "playStopAudio"
+    },
+    "weather": "Weather",
+    "@weather": {
+        "description": "weather"
+    },
+    "temperature": "Temperature",
+    "@temperature": {
+        "description": "Temperature"
+    },
+    "description": "Description",
+    "@description": {
+        "description": "description"
+    },
+    "humidity": "Humidity",
+    "@humidity": {
+        "description": "humidity"
+    },
+    "close": "Close",
+    "@close": {
+        "description": "close"
+    },
+    "mapOfPlace": "Map",
+    "@mapOfPlace": {
+        "description": "mapOfPlace"
+    },
+    "itinerary": "Itinerary",
+    "@itinerary": {
+        "description": "itinerary"
+    },
+    "itineraryWithDistance": "itinerary's distance =",
+    "@itineraryWithDistance": {
+        "description": "itineraryWithDistance"
+    },
+    "galleryPhotos": "Photos",
+    "@galleryPhotos": {
+        "description": "galleryPhotos"
+    },
+    "galleryVideos": "Videos",
+    "@galleryVideos": {
+        "description": "galleryVideos"
+    },
+    "gallerySounds": "Sounds",
+    "@gallerySounds": {
+        "description": "gallerySounds"
+    }
+
+}

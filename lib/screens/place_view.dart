@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:pfe_app/components/language.dart';
 import 'package:pfe_app/components/weather.dart';
 import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/gallery.dart';
@@ -9,9 +10,10 @@ import 'package:pfe_app/screens/place_map.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../components/place_structure.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const apiKeyGoogleNotRestricted =
-Text('AIzaSyAFvqUhsOngyoyEokDFiN84WO-4MwWKpmo');
+    Text('AIzaSyAFvqUhsOngyoyEokDFiN84WO-4MwWKpmo');
 const apiKeyGoogle = Text('AIzaSyBAGR7tefhwB4thG7lXUskeyfHfa2avcUI');
 
 class PlaceView extends StatefulWidget {
@@ -42,24 +44,23 @@ class _PlaceViewState extends State<PlaceView> {
       '$kURlForImage/${list!.thumb}',
     ];
     imageSliders = imgList!
-        .map((item) =>
-        Container(
-          height: 300.0,
-          margin: const EdgeInsets.all(5.0),
-          padding: const EdgeInsets.only(top: 20.0),
-          child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-              child: Stack(
-                children: <Widget>[
-                  Image.network(
-                    item,
-                    fit: BoxFit.cover,
-                    width: 1000.0,
-                    height: 300.0,
-                  ),
-                ],
-              )),
-        ))
+        .map((item) => Container(
+              height: 300.0,
+              margin: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.only(top: 20.0),
+              child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  child: Stack(
+                    children: <Widget>[
+                      Image.network(
+                        item,
+                        fit: BoxFit.cover,
+                        width: 1000.0,
+                        height: 300.0,
+                      ),
+                    ],
+                  )),
+            ))
         .toList();
   }
 
@@ -210,7 +211,7 @@ class _PlaceViewState extends State<PlaceView> {
                         child: ListTile(
                           leading: Container(
                             margin:
-                            const EdgeInsets.only(left: 30.0, top: 20.0),
+                                const EdgeInsets.only(left: 30.0, top: 20.0),
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: Colors.black,
@@ -221,16 +222,22 @@ class _PlaceViewState extends State<PlaceView> {
                               onTap: () {
                                 Navigator.pop(context);
                               },
-                              child: const Icon(
-                                Icons.keyboard_arrow_left,
-                                color: Colors.black,
-                                size: 30.0,
-                              ),
+                              child: Language.language == const Locale('ar')
+                                  ? const Icon(
+                                      Icons.keyboard_arrow_right,
+                                      color: Colors.black,
+                                      size: 30.0,
+                                    )
+                                  : const Icon(
+                                      Icons.keyboard_arrow_left,
+                                      color: Colors.black,
+                                      size: 30.0,
+                                    ),
                             ),
                           ),
                           title: Container(
                             margin:
-                            const EdgeInsets.only(top: 20.0, right: 30.0),
+                                const EdgeInsets.only(top: 20.0, right: 30.0),
                             child: Text(
                               '${list!.name}',
                               style: const TextStyle(fontSize: 25.0),
@@ -240,31 +247,31 @@ class _PlaceViewState extends State<PlaceView> {
                             onTap: () {
                               Alert(
                                   context: context,
-                                  title: "Weather",
+                                  title: AppLocalizations.of(context)!.weather,
                                   content: Column(
                                     children: [
                                       ListTile(
-                                        title: const Text('Temperature'),
+                                        title: Text(AppLocalizations.of(context)!.temperature),
                                         trailing: Text('${weather!.temp!}°'),
                                       ),
                                       ListTile(
-                                        title: const Text('Description'),
+                                        title: Text(AppLocalizations.of(context)!.description),
                                         trailing: Text(
                                             '${weather!.weatherDescription}'),
                                       ),
                                       ListTile(
-                                        title: const Text('Humidity'),
+                                        title: Text(AppLocalizations.of(context)!.humidity),
                                         trailing:
-                                        Text('${weather!.humidity} %'),
+                                            Text('${weather!.humidity} %'),
                                       ),
                                     ],
                                   ),
                                   buttons: [
                                     DialogButton(
                                       onPressed: () => Navigator.pop(context),
-                                      child: const Text(
-                                        "Close",
-                                        style: TextStyle(
+                                      child: Text(
+                                        AppLocalizations.of(context)!.close,
+                                        style: const TextStyle(
                                             color: Colors.white, fontSize: 20),
                                       ),
                                     )
@@ -272,7 +279,7 @@ class _PlaceViewState extends State<PlaceView> {
                             },
                             child: Container(
                               margin:
-                              const EdgeInsets.only(top: 10.0, right: 10.0),
+                                  const EdgeInsets.only(top: 10.0, right: 10.0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
                                 color: Colors.grey,
@@ -336,17 +343,17 @@ class _PlaceViewState extends State<PlaceView> {
                               _stop();
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                    return PlaceMap(
-                                      location: location,
-                                      sitePosition: site,
-                                    );
-                                  }));
+                                return PlaceMap(
+                                  location: location,
+                                  sitePosition: site,
+                                );
+                              }));
                             },
                             minWidth: 150.0,
                             height: 42.0,
-                            child: const Text(
-                              'Visit',
-                              style: TextStyle(
+                            child: Text(
+                              AppLocalizations.of(context)!.visit,
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 20.0,
                               ),
@@ -367,9 +374,9 @@ class _PlaceViewState extends State<PlaceView> {
                             },
                             minWidth: 150.0,
                             height: 42.0,
-                            child: const Text(
-                              'Gallery',
-                              style: TextStyle(
+                            child: Text(
+                              AppLocalizations.of(context)!.gallery,
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 20.0,
                               ),
@@ -389,15 +396,15 @@ class _PlaceViewState extends State<PlaceView> {
                       child: Column(
                         children: [
                           ListTile(
-                            title: const Text(
-                              'Price:',
-                              style: TextStyle(
+                            title: Text(
+                              AppLocalizations.of(context)!.pricePlaceView,
+                              style: const TextStyle(
                                 fontFamily: 'Lobster',
                                 fontSize: 20.0,
                               ),
                             ),
                             trailing: Text(
-                              '${list!.price} DZD',
+                              '${list!.price} ${AppLocalizations.of(context)!.pricePlaceViewResult}',
                               style: const TextStyle(
                                 fontFamily: 'Lobster',
                                 fontSize: 20.0,
@@ -405,15 +412,15 @@ class _PlaceViewState extends State<PlaceView> {
                             ),
                           ),
                           ListTile(
-                            title: const Text(
-                              'Time needed for visit:',
-                              style: TextStyle(
+                            title: Text(
+                              AppLocalizations.of(context)!.timePlaceView,
+                              style: const TextStyle(
                                 fontFamily: 'Lobster',
                                 fontSize: 20.0,
                               ),
                             ),
                             trailing: Text(
-                              '${list!.time} minute(s)',
+                              '${list!.time} ${AppLocalizations.of(context)!.timePlaceViewResult}',
                               style: const TextStyle(
                                 fontFamily: 'Lobster',
                                 fontSize: 20.0,
@@ -421,9 +428,9 @@ class _PlaceViewState extends State<PlaceView> {
                             ),
                           ),
                           ListTile(
-                            leading: const Text(
-                              'Press on the icon to Play/Stop',
-                              style: TextStyle(
+                            leading: Text(
+                              AppLocalizations.of(context)!.playStopAudio,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -431,13 +438,13 @@ class _PlaceViewState extends State<PlaceView> {
                             trailing: IconButton(
                               icon: isPlaying
                                   ? const Icon(
-                                Icons.stop_circle_outlined,
-                                color: Colors.black,
-                              )
+                                      Icons.stop_circle_outlined,
+                                      color: Colors.black,
+                                    )
                                   : const Icon(
-                                Icons.play_circle_fill_outlined,
-                                color: Colors.green,
-                              ),
+                                      Icons.play_circle_fill_outlined,
+                                      color: Colors.green,
+                                    ),
                               onPressed: () {
                                 isPlaying ? _stop() : _speak(description!);
                               },

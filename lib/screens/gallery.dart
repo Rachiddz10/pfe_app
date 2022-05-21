@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Gallery extends StatefulWidget {
   const Gallery({Key? key}) : super(key: key);
@@ -60,10 +61,10 @@ class _GalleryState extends State<Gallery> {
                 ),
                 margin: const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0, bottom: 20.0),
                 height: 50.0,
-                child: const Center(
+                child: Center(
                   child: Text(
-                      'Photos',
-                    style: TextStyle(
+                      AppLocalizations.of(context)!.galleryPhotos,
+                    style: const TextStyle(
                       fontSize: 25.0,
                       fontFamily: 'PermanentMarker',
                       color: Colors.black,
@@ -132,10 +133,10 @@ class _GalleryState extends State<Gallery> {
                 ),
                 margin: const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0, bottom: 20.0),
                 height: 50.0,
-                child: const Center(
+                child: Center(
                   child: Text(
-                    'Videos',
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.galleryVideos,
+                    style: const TextStyle(
                       fontSize: 25.0,
                       fontFamily: 'PermanentMarker',
                       color: Colors.black,
@@ -150,10 +151,10 @@ class _GalleryState extends State<Gallery> {
                 ),
                 margin: const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0, bottom: 20.0),
                 height: 50.0,
-                child: const Center(
+                child: Center(
                   child: Text(
-                    'Sounds',
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.gallerySounds,
+                    style: const TextStyle(
                       fontSize: 25.0,
                       fontFamily: 'PermanentMarker',
                       color: Colors.black,

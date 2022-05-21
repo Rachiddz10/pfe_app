@@ -9,6 +9,7 @@ import '../apis/places_info_api.dart';
 import '../components/place.dart';
 import '../components/place_id.dart';
 import '../components/place_structure.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen(
@@ -195,11 +196,11 @@ class _SplashScreenState extends State<SplashScreen> {
                                 },
                                 minWidth: 150.0,
                                 height: 42.0,
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    'Visit this Town',
-                                    style: TextStyle(
+                                    AppLocalizations.of(context)!.visitThisTown,
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 30.0,
                                     ),

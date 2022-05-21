@@ -9,7 +9,6 @@ const kText = Text(
   ),
   textAlign: TextAlign.justify,
 );
-
 const kColorSelected = Color(0xFF5470FF);
 const kTextColorSelected = Colors.white;
 const kTextColorNotSelected = Colors.black;

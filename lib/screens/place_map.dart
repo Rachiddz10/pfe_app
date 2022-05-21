@@ -4,6 +4,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pfe_app/core/location_service.dart';
 import '../core/geo_location.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlaceMap extends StatefulWidget {
   static const String id = 'PlaceMap';
@@ -108,7 +109,7 @@ class PlaceMapState extends State<PlaceMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Map'),
+        title: Text(AppLocalizations.of(context)!.mapOfPlace),
         centerTitle: true,
       ),
       body: GoogleMap(
@@ -138,7 +139,7 @@ class PlaceMapState extends State<PlaceMap> {
           );
           _setPolyline(directions['polyline_decoded']);
         },
-        label: taped ? Text('itinerary\'s distance = $distance') : const Text('itinerary'),
+        label: taped ? Text('${AppLocalizations.of(context)!.itineraryWithDistance} $distance') : Text(AppLocalizations.of(context)!.itinerary),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );

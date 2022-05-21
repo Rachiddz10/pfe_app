@@ -6,7 +6,7 @@ import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/make_trip.dart';
 import 'package:pfe_app/screens/explore.dart';
 import 'package:pfe_app/screens/place_view.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../apis/weather_api.dart';
 import '../components/weather.dart';
 
@@ -57,11 +57,11 @@ class _MainScreenState extends State<MainScreen> {
           child: Center(
             child: Container(
               color: Colors.white,
-              child: const Padding(
-                padding: EdgeInsets.all(20.0),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
                 child: Text(
-                  'No places inserted in this town',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.noPlacesFound,
+                  style: const TextStyle(
                     fontSize: 35.0,
                     color: Colors.black,
                   ),
@@ -99,18 +99,18 @@ class _MainScreenState extends State<MainScreen> {
                           vertical: 10.0, horizontal: 30.0),
                       child: TextField(
                         onChanged: (value) {},
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          suffixIcon: Icon(
+                          suffixIcon: const Icon(
                             Icons.search,
                             color: Colors.black54,
                           ),
-                          hintText: 'Search',
-                          hintStyle: TextStyle(
+                          hintText: AppLocalizations.of(context)!.search,
+                          hintStyle: const TextStyle(
                             color: Colors.grey,
                           ),
-                          border: OutlineInputBorder(
+                          border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.0),
                             ),
@@ -133,9 +133,9 @@ class _MainScreenState extends State<MainScreen> {
                               },
                               minWidth: 150.0,
                               height: 50.0,
-                              child: const Text(
-                                'Make Trip',
-                                style: TextStyle(
+                              child: Text(
+                                AppLocalizations.of(context)!.makeTrip,
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 18.0,
                                 ),
@@ -156,9 +156,9 @@ class _MainScreenState extends State<MainScreen> {
                               },
                               minWidth: 150.0,
                               height: 50.0,
-                              child: const Text(
-                                'Explore',
-                                style: TextStyle(
+                              child: Text(
+                                AppLocalizations.of(context)!.explore,
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 18.0,
                                 ),
@@ -169,14 +169,14 @@ class _MainScreenState extends State<MainScreen> {
                       ],
                     ),
                     Row(
-                      children: const [
+                      children: [
                         Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 25.0, horizontal: 50.0),
                           child: Text(
-                            'Nearby Places',
+                            AppLocalizations.of(context)!.nearbyPlaces,
                             textAlign: TextAlign.left,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 23.0,
                             ),
                           ),
@@ -185,8 +185,9 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width - 50.0,
-                      height: 440.0,
+                      height: 460.0,
                       child: ListView(
+                        shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         children: listOfPlaces!
                             .map(
@@ -200,8 +201,6 @@ class _MainScreenState extends State<MainScreen> {
                                         showSpinner = true;
                                       });
                                       await getDataMeteo(e);
-
-
                                       if(!mounted) return;
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
@@ -222,7 +221,7 @@ class _MainScreenState extends State<MainScreen> {
                                             ListTile(
                                               title: Text(e.name!),
                                               subtitle: Text(
-                                                  '${e.price} DZD for entry'),
+                                                  '${e.price} ${AppLocalizations.of(context)!.pricing}'),
                                               trailing: const Icon(
                                                   Icons.favorite_outline),
                                             ),
@@ -251,14 +250,14 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ),
                     Row(
-                      children: const [
+                      children: [
                         Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 25.0, horizontal: 50.0),
                           child: Text(
-                            'Popular Places',
+                            AppLocalizations.of(context)!.popularPlaces,
                             textAlign: TextAlign.left,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 23.0,
                             ),
                           ),
