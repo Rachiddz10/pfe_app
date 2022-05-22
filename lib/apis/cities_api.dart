@@ -11,7 +11,7 @@ class CitiesApi {
     var json = jsonDecode(response.body);
     if(response.statusCode == 200) {
       for (int i=1;i<= json.length;i++) {
-        listOfCities.add(City.fromJson(json[i-1]));
+        listOfCities.add(await City.fromJsonTranslated(json[i-1]));
       }
       return listOfCities;
     } else {

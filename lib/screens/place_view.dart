@@ -14,7 +14,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const apiKeyGoogleNotRestricted =
     Text('AIzaSyAFvqUhsOngyoyEokDFiN84WO-4MwWKpmo');
-const apiKeyGoogle = Text('AIzaSyBAGR7tefhwB4thG7lXUskeyfHfa2avcUI');
+
 
 class PlaceView extends StatefulWidget {
   const PlaceView({this.weather, this.placeInfo, Key? key}) : super(key: key);
@@ -476,9 +476,5 @@ class _PlaceViewState extends State<PlaceView> {
         ),
       ),
     );
-  }
-
-  void setTtsLanguage() async {
-    await _flutterTts!.setLanguage("en-US");
   }
 }

@@ -15,5 +15,5 @@ const kTextColorNotSelected = Colors.black;
 const kColorNotSelected = Color(0xFFD7CCC8);
 const kURl = 'https://www.pfeweb.ml/REST';
 const kURlForImage = 'https://www.pfeweb.ml';
-
+const apiKeyGoogle = Text('AIzaSyBAGR7tefhwB4thG7lXUskeyfHfa2avcUI');
 const String apiKeyWeather = 'a1173da81b738a5fdc4ad146f555d9ab&units=metric';

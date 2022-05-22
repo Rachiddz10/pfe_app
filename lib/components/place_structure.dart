@@ -1,3 +1,6 @@
+import 'package:pfe_app/components/language.dart';
+import 'package:pfe_app/components/translation.dart';
+
 class PlaceStructure {
   final int? idPlace;
   final String? name;
@@ -21,17 +24,38 @@ class PlaceStructure {
     required this.summary,
   });
 
-  factory PlaceStructure.fromJson(int idNum, Map<String, dynamic> json, List<dynamic> jsonMeta, List<dynamic> jsonGeo, Map<String, dynamic> jsonThumb) {
+  static Future<PlaceStructure> fromJsonTranslated(int idNum, Map<String, dynamic> json, List<dynamic> jsonMeta, List<dynamic> jsonGeo, Map<String, dynamic> jsonThumb) async {
+    String? cityName = json['name'];
+    String? cityDescription = json['description'];
+    String? citySummary = jsonThumb['summary'];
+    if(Language.language.languageCode == 'fr') {
+      cityName = await TranslationAPI.translate(cityName!, 'fr');
+      if(citySummary != null) {
+        cityDescription = await TranslationAPI.translate(cityDescription!, 'fr');
+      }
+      if(citySummary != null) {
+        citySummary = await TranslationAPI.translate(citySummary, 'fr');
+      }
+    }
+    if(Language.language.languageCode == 'ar') {
+      cityName = await TranslationAPI.translate(cityName!, 'ar');
+      if(citySummary != null) {
+        cityDescription = await TranslationAPI.translate(cityDescription!, 'ar');
+      }
+      if(citySummary != null) {
+        citySummary = await TranslationAPI.translate(citySummary, 'ar');
+      }
+    }
     PlaceStructure place = PlaceStructure(
       idPlace: idNum,
-      name: json['name'],
-      description: json['description'],
+      name: cityName,
+      description: cityDescription,
       thumb: json['thumb'],
       price: jsonMeta[0]['price'],
       time: jsonMeta[0]['time'],
       lat: jsonGeo[0]['lat'],
       long: jsonGeo[0]['long'],
-      summary: jsonThumb['summary'],
+      summary: citySummary,
     );
     return place;
   }

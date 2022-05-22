@@ -4,6 +4,7 @@ import 'package:pfe_app/screens/city_screen.dart';
 
 import '../apis/cities_api.dart';
 import '../components/city.dart';
+import '../components/language.dart';
 import '../components/my_card.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -37,6 +38,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Language.setLanguage(Localizations.localeOf(context));
     return Scaffold(
       body: SafeArea(
         child: Container(

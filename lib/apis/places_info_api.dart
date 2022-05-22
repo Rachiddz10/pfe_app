@@ -22,7 +22,7 @@ class PlaceInfo {
       var jsonThumb = jsonDecode(responseThumb.body);
       if (response.statusCode == 200 && responseMeta.statusCode == 200
           && responseGeo.statusCode == 200 && responseThumb.statusCode == 200) {
-        listPlacesInfo.add(PlaceStructure.fromJson(
+        listPlacesInfo.add(await PlaceStructure.fromJsonTranslated(
             idNumber, json, jsonMeta, jsonGeo, jsonThumb));
         return listPlacesInfo;
       } else {

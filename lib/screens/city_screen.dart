@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pfe_app/constants.dart';
-import 'package:pfe_app/components/language.dart';
 import 'package:pfe_app/screens/splash_screen.dart';
 import '../components/my_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -70,7 +69,6 @@ class _CityScreenState extends State<CityScreen> {
                         .map(
                           (e) => GestureDetector(
                             onTap: () {
-                              Language.setLanguage(Localizations.localeOf(context));
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
                                 return SplashScreen(
