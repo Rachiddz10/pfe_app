@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pfe_app/components/gallery_class.dart';
+import 'package:pfe_app/constants.dart';
 
 class Gallery extends StatefulWidget {
   const Gallery({Key? key, this.listGallery}) : super(key: key);
@@ -22,11 +23,25 @@ class _GalleryState extends State<Gallery> {
   //-----------------------------
 
 
+  //------ split (images, videos, sounds) ----
   List<String>? images;
   int _current = 0;
   final CarouselController _controller = CarouselController();
 
+  List<String>? imagesURLs = [];
+  List<String>? videoURLs = [];
+  List<String>? soundURLs = [];
+
   void initImage() {
+    List<String> urls = [];
+    for (var e in listOfMedia!) {
+      if(e.type!.contains('image')){
+        print('${e.type} == true');
+        urls.add('$kURlForImage${e.uri}');
+      } else {
+        print('${e.type} == false');
+      }
+    }
     images = [
       'https://images.unsplash.com/photo-1586882829491-b81178aa622e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80',
       'https://images.unsplash.com/photo-1586871608370-4adee64d1794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2862&q=80',
@@ -37,17 +52,18 @@ class _GalleryState extends State<Gallery> {
       'https://images.unsplash.com/photo-1586953983027-d7508a64f4bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80',
     ];
   }
+  //---------------------------------
 
   @override
   initState() {
+    listOfMedia = widget.listGallery;
     initImage();
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       for (var imageUrl in images!) {
         precacheImage(NetworkImage(imageUrl), context);
       }
     });
-    super.initState();
-    listOfMedia = widget.listGallery;
   }
 
   @override

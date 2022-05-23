@@ -29,16 +29,16 @@ class PlaceStructure {
     String? cityDescription = json['description'];
     String? citySummary = jsonThumb['summary'];
     if(Language.language.languageCode == 'fr') {
-      if(citySummary != null) {
-        cityDescription = await TranslationAPI.translate(cityDescription!, 'fr');
+      if(cityDescription != null) {
+        cityDescription = await TranslationAPI.translate(cityDescription, 'fr');
       }
       if(citySummary != null) {
         citySummary = await TranslationAPI.translate(citySummary, 'fr');
       }
     }
     if(Language.language.languageCode == 'ar') {
-      if(citySummary != null) {
-        cityDescription = await TranslationAPI.translate(cityDescription!, 'ar');
+      if(cityDescription != null) {
+        cityDescription = await TranslationAPI.translate(cityDescription, 'ar');
       }
       if(citySummary != null) {
         citySummary = await TranslationAPI.translate(citySummary, 'ar');

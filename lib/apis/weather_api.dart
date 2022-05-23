@@ -25,7 +25,7 @@ class WeatherAPI {
         weatherDescription = jsonDecode(data)['weather'][0]['description'];
         var condition = jsonDecode(data)['weather'][0]['icon'];
         iconURL = 'http://openweathermap.org/img/wn/$condition@2x.png';
-        Weather weather = Weather.fromJson(
+        Weather weather = await Weather.fromJsonTranslated(
             temp!, humidity!, weatherDescription!, iconURL!, city!);
         return weather;
       } else {
