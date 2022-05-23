@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pfe_app/constants.dart';
+import 'package:html_unescape/html_unescape.dart';
 
 class TranslationAPI {
   static Future<String> translate(
@@ -11,7 +12,7 @@ class TranslationAPI {
       var json = jsonDecode(response.body);
       List translated = json['data']['translations'] as List;
       String translatedMessage = translated[0]['translatedText'];
-      return translatedMessage;
+      return HtmlUnescape().convert(translatedMessage);
     } else {
       throw Exception();
     }

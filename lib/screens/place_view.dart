@@ -124,8 +124,11 @@ class _PlaceViewState extends State<PlaceView> {
 
   initializeTts() async {
     _flutterTts = FlutterTts();
-    await _flutterTts!.setLanguage("en-US");
-
+    if(Language.language.languageCode == 'ar') {
+      await _flutterTts!.setLanguage("ar-SA");
+    } else {
+      await _flutterTts!.setLanguage(Language.language.languageCode);
+    }
     /*if (Platform.isAndroid) {
       _getDefaultEngine();
     }*/
