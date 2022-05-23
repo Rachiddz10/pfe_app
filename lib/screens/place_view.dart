@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:pfe_app/apis/gallery_api.dart';
+import 'package:pfe_app/components/gallery.dart';
 import 'package:pfe_app/components/language.dart';
 import 'package:pfe_app/components/weather.dart';
 import 'package:pfe_app/constants.dart';
@@ -15,7 +17,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 const apiKeyGoogleNotRestricted =
     Text('AIzaSyAFvqUhsOngyoyEokDFiN84WO-4MwWKpmo');
 
-
 class PlaceView extends StatefulWidget {
   const PlaceView({this.weather, this.placeInfo, Key? key}) : super(key: key);
   static const String id = 'place_view';
@@ -27,6 +28,28 @@ class PlaceView extends StatefulWidget {
 }
 
 class _PlaceViewState extends State<PlaceView> {
+  //------------ Gallery API ----------
+
+  dynamic json;
+  List<GalleryClass> listGallery = [];
+
+  Future<List<GalleryClass>> getAllGalleries() async {
+    listGallery = [];
+    List<GalleryClass> listOfGalleries =
+        await GalleryAPI().fetchAll(list!.idPlace!);
+    for (int i = 0; i < listOfGalleries.length; i++) {
+      listGallery.add(
+        GalleryClass(
+          id: listOfGalleries[i].id,
+          type: listOfGalleries[i].type,
+          uri: listOfGalleries[i].uri,
+          title: listOfGalleries[i].title,
+        ),
+      );
+    }
+    return listGallery;
+  }
+
   //------------- Images ---------------
 
   List<String>? imgList;
@@ -124,7 +147,7 @@ class _PlaceViewState extends State<PlaceView> {
 
   initializeTts() async {
     _flutterTts = FlutterTts();
-    if(Language.language.languageCode == 'ar') {
+    if (Language.language.languageCode == 'ar') {
       await _flutterTts!.setLanguage("ar-SA");
     } else {
       await _flutterTts!.setLanguage(Language.language.languageCode);
@@ -254,16 +277,22 @@ class _PlaceViewState extends State<PlaceView> {
                                   content: Column(
                                     children: [
                                       ListTile(
-                                        title: Text(AppLocalizations.of(context)!.temperature),
+                                        title: Text(
+                                            AppLocalizations.of(context)!
+                                                .temperature),
                                         trailing: Text('${weather!.temp!}°'),
                                       ),
                                       ListTile(
-                                        title: Text(AppLocalizations.of(context)!.description),
+                                        title: Text(
+                                            AppLocalizations.of(context)!
+                                                .description),
                                         trailing: Text(
                                             '${weather!.weatherDescription}'),
                                       ),
                                       ListTile(
-                                        title: Text(AppLocalizations.of(context)!.humidity),
+                                        title: Text(
+                                            AppLocalizations.of(context)!
+                                                .humidity),
                                         trailing:
                                             Text('${weather!.humidity} %'),
                                       ),
@@ -371,9 +400,18 @@ class _PlaceViewState extends State<PlaceView> {
                           color: const Color(0xFF3F51B5),
                           borderRadius: BorderRadius.circular(15.0),
                           child: MaterialButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              listGallery = await getAllGalleries();
                               _stop();
-                              Navigator.pushNamed(context, Gallery.id);
+                              if (!mounted) return;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return Gallery(listGallery: listGallery,);
+                                  },
+                                ),
+                              );
                             },
                             minWidth: 150.0,
                             height: 42.0,

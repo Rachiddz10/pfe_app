@@ -13,9 +13,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen(
-      {required this.idNumber,
-      required this.name,
-      required this.image,
+      {this.idNumber,
+      this.name,
+      this.image,
       Key? key})
       : super(key: key);
   static const String id = 'splash_screen';

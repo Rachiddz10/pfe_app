@@ -1,16 +1,27 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pfe_app/components/gallery.dart';
 
 class Gallery extends StatefulWidget {
-  const Gallery({Key? key}) : super(key: key);
+  const Gallery({Key? key, this.listGallery}) : super(key: key);
   static const String id = 'gallery';
+  final List<GalleryClass>? listGallery;
 
   @override
   State<Gallery> createState() => _GalleryState();
 }
 
 class _GalleryState extends State<Gallery> {
+
+  //-------- Gallery API -------
+
+  List<GalleryClass>? listOfMedia;
+
+
+  //-----------------------------
+
+
   List<String>? images;
   int _current = 0;
   final CarouselController _controller = CarouselController();
@@ -36,6 +47,7 @@ class _GalleryState extends State<Gallery> {
       }
     });
     super.initState();
+    listOfMedia = widget.listGallery;
   }
 
   @override

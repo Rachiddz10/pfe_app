@@ -38,11 +38,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const LoadingScreen(),
         CityScreen.id: (context) => const CityScreen(),
-        SplashScreen.id: (context) => const SplashScreen(
-              idNumber: 0,
-              name: 'hello',
-              image: '/storage/media/1652173662_44856476675_4aaab4c067_b.jpg',
-            ),
+        SplashScreen.id: (context) => const SplashScreen(),
         MainScreen.id: (context) => const MainScreen(),
         PlaceView.id: (context) => const PlaceView(),
         Explore.id: (context) => const Explore(),
