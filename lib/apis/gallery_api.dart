@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:pfe_app/components/gallery.dart';
+import 'package:pfe_app/components/gallery_class.dart';
 import 'package:http/http.dart' as http;
 import 'package:pfe_app/constants.dart';
 

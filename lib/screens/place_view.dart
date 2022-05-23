@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:pfe_app/apis/gallery_api.dart';
-import 'package:pfe_app/components/gallery.dart';
+import 'package:pfe_app/components/gallery_class.dart';
 import 'package:pfe_app/components/language.dart';
 import 'package:pfe_app/components/weather.dart';
 import 'package:pfe_app/constants.dart';
