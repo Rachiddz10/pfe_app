@@ -116,7 +116,7 @@ class PlaceMapState extends State<PlaceMap> {
         markers: _markers,
         polygons: _polygons,
         polylines: _polylines,
-        mapType: MapType.normal,
+        mapType: MapType.hybrid,
         initialCameraPosition: getCameraPosition(),
         //initialCameraPosition: getPosition(),
         onMapCreated: (GoogleMapController controller) {
