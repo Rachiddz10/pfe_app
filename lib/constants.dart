@@ -17,3 +17,23 @@ const kURl = 'https://www.pfeweb.ml/REST';
 const kURlForImage = 'https://www.pfeweb.ml';
 const apiKeyGoogle = Text('AIzaSyBAGR7tefhwB4thG7lXUskeyfHfa2avcUI');
 const String apiKeyWeather = 'a1173da81b738a5fdc4ad146f555d9ab&units=metric';
+
+/*
+const kSendButtonTextStyle = TextStyle(
+  color: Colors.lightBlueAccent,
+  fontWeight: FontWeight.bold,
+  fontSize: 18.0,
+);
+
+const kMessageTextFieldDecoration = InputDecoration(
+  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+  hintText: 'Type your message here...',
+  border: InputBorder.none,
+);
+
+const kMessageContainerDecoration = BoxDecoration(
+  border: Border(
+    top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+  ),
+);
+ */

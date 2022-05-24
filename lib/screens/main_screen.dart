@@ -4,9 +4,9 @@ import 'package:pfe_app/components/place_id.dart';
 import 'package:pfe_app/components/place_structure.dart';
 import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/make_trip.dart';
-import 'package:pfe_app/screens/explore.dart';
 import 'package:pfe_app/screens/place_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pfe_app/screens/welcome_screen.dart';
 import '../apis/weather_api.dart';
 import '../components/weather.dart';
 
@@ -152,7 +152,7 @@ class _MainScreenState extends State<MainScreen> {
                             borderRadius: BorderRadius.circular(10.0),
                             child: MaterialButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, Explore.id);
+                                Navigator.pushNamed(context, WelcomeScreen.id);
                               },
                               minWidth: 150.0,
                               height: 50.0,

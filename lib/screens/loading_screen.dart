@@ -9,6 +9,7 @@ import '../components/my_card.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
+  static const String id = 'loading_screen';
 
   @override
   State<LoadingScreen> createState() => _LoadingScreenState();

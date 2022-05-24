@@ -5,13 +5,16 @@ import 'package:pfe_app/screens/explore.dart';
 import 'package:pfe_app/screens/filter.dart';
 import 'package:pfe_app/screens/gallery.dart';
 import 'package:pfe_app/screens/loading_screen.dart';
+import 'package:pfe_app/screens/login_screen.dart';
 import 'package:pfe_app/screens/main_screen.dart';
 import 'package:pfe_app/screens/make_trip.dart';
 import 'package:pfe_app/screens/path_screen.dart';
 import 'package:pfe_app/screens/place_view.dart';
+import 'package:pfe_app/screens/register_screen.dart';
 import 'package:pfe_app/screens/see_more.dart';
 import 'package:pfe_app/screens/splash_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pfe_app/screens/welcome_screen.dart';
 import 'l10n/l10n.dart';
 
 
@@ -36,7 +39,10 @@ class MyApp extends StatelessWidget {
       ],
       initialRoute: '/',
       routes: {
-        '/': (context) => const LoadingScreen(),
+        '/': (context) => const WelcomeScreen(),
+        WelcomeScreen.id: (context) => const WelcomeScreen(),
+        RegisterScreen.id: (context) => const RegisterScreen(),
+        LoginScreen.id: (context) => const LoginScreen(),
         CityScreen.id: (context) => const CityScreen(),
         SplashScreen.id: (context) => const SplashScreen(),
         MainScreen.id: (context) => const MainScreen(),
@@ -47,6 +53,7 @@ class MyApp extends StatelessWidget {
         Filter.id: (context) => const Filter(),
         SeeMore.id: (context) => const SeeMore(),
         PathScreen.id: (context) => const PathScreen(),
+        LoadingScreen.id: (context) => const LoadingScreen(),
       },
     );
   }
