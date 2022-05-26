@@ -6,7 +6,7 @@ import 'package:pfe_app/constants.dart';
 class PlaceInfo {
 
   Future<List<PlaceStructure>> fetchAll(int id, int idNumber) async {
-    try {
+    //try {
       List<PlaceStructure> listPlacesInfo = [];
       final http.Response response = await http.get(
           Uri.parse('$kURl/$id/$idNumber/info'));
@@ -28,10 +28,10 @@ class PlaceInfo {
       } else {
         throw Exception(' Failed to load Places');
       }
-    } catch (e) {
+    }/* catch (e) {
     List<PlaceStructure> listPlacesInfo = [];
     listPlacesInfo.add(PlaceStructure(idPlace: 0, name: 'Error', description: 'Error Fetching data', thumb: 'storage/media/1652570202_fichier_produit_21.jpg', price: 0, time: 0, lat: '', long: '', summary: ''));
       return listPlacesInfo;
     }
-  }
+  }*/
 }

@@ -799,3 +799,19 @@ class _GalleryState extends State<Gallery> {
 }
 
  */
+
+/*Future setLandscape() async {
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+
+    await Wakelock.enable();
+  }
+
+  Future setAllOrientations() async{
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+    await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+    await Wakelock.disable();
+  }*/

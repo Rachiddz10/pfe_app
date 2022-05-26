@@ -5,14 +5,18 @@ import 'package:pfe_app/screens/path_screen.dart';
 
 
 class MakeTrip extends StatefulWidget {
-  const MakeTrip({Key? key}) : super(key: key);
+  const MakeTrip({this.name, Key? key}) : super(key: key);
   static const String id = 'mak_trip';
+  final String? name;
 
   @override
   State<MakeTrip> createState() => _MakeTripState();
 }
 
 class _MakeTripState extends State<MakeTrip> {
+
+  String? cityName;
+
   bool monument = false;
   bool mosque = false;
   bool museum = false;
@@ -57,6 +61,13 @@ class _MakeTripState extends State<MakeTrip> {
       },
     );
   }
+
+  @override
+  void initState() {
+    cityName = widget.name;
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {

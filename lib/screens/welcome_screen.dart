@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:pfe_app/screens/loading_screen.dart';
 import 'package:pfe_app/screens/login_screen.dart';
 import 'package:pfe_app/screens/register_screen.dart';
 
@@ -73,18 +74,20 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         child: Image.asset('images/logo.png'),
                       ),
                     ),
-                    AnimatedTextKit(
-                      animatedTexts: [
-                        TypewriterAnimatedText(
-                          'Travel App',
-                          textStyle: const TextStyle(
-                            fontSize: 45.0,
-                            fontWeight: FontWeight.w900,
+                    Flexible(
+                      child: AnimatedTextKit(
+                        animatedTexts: [
+                          TypewriterAnimatedText(
+                            'Travel App',
+                            textStyle: const TextStyle(
+                              fontSize: 45.0,
+                              fontWeight: FontWeight.w900,
+                            ),
+                            speed: const Duration(milliseconds: 250),
                           ),
-                          speed: const Duration(milliseconds: 250),
-                        ),
-                      ],
-                      //${controller!.value.toInt()} %
+                        ],
+                        //${controller!.value.toInt()} %
+                      ),
                     ),
                   ],
                 ),
@@ -123,6 +126,30 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       height: 42.0,
                       child: const Text(
                         'Register',
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 60.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Material(
+                    color: Colors.pink[400],
+                    borderRadius: BorderRadius.circular(30.0),
+                    elevation: 5.0,
+                    child: MaterialButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, LoadingScreen.id);
+                      },
+                      minWidth: 200.0,
+                      height: 42.0,
+                      child: const Text(
+                        'Skip (continue without login)',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

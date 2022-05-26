@@ -23,15 +23,12 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
-
   //-----------prepare Weather for nex screen ------
   Weather? weather;
+
   Future getDataMeteo(PlaceStructure placeStructure) async {
     weather = await WeatherAPI().getDataMeteo(placeStructure);
   }
-
-
 
   //------- City api (id + name) ------
   int? id;
@@ -55,20 +52,19 @@ class _MainScreenState extends State<MainScreen> {
       return Scaffold(
         body: SafeArea(
           child: Center(
-            child: Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  AppLocalizations.of(context)!.noPlacesFound,
-                  style: const TextStyle(
-                    fontSize: 35.0,
-                    color: Colors.black,
-                  ),
+              child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                AppLocalizations.of(context)!.noPlacesFound,
+                style: const TextStyle(
+                  fontSize: 35.0,
+                  color: Colors.black,
                 ),
               ),
-            )
-          ),
+            ),
+          )),
         ),
       );
     } else {
@@ -122,14 +118,21 @@ class _MainScreenState extends State<MainScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 20.0, bottom: 8.0),
+                          padding:
+                              const EdgeInsets.only(top: 20.0, bottom: 8.0),
                           child: Material(
                             elevation: 5.0,
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(10.0),
                             child: MaterialButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, MakeTrip.id);
+                                Navigator.push(
+                                  (context),
+                                  MaterialPageRoute(
+                                    builder: (context) => const MakeTrip(
+                                    ),
+                                  ),
+                                );
                               },
                               minWidth: 150.0,
                               height: 50.0,
@@ -144,7 +147,8 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 20.0, bottom: 8.0),
+                          padding:
+                              const EdgeInsets.only(top: 20.0, bottom: 8.0),
                           child: Material(
                             elevation: 5.0,
                             //color: Colors.indigo[300],
@@ -192,7 +196,8 @@ class _MainScreenState extends State<MainScreen> {
                         children: listOfPlaces!
                             .map(
                               (e) => SizedBox(
-                                width: MediaQuery.of(context).size.width - 100.0,
+                                width:
+                                    MediaQuery.of(context).size.width - 100.0,
                                 child: Padding(
                                   padding: const EdgeInsets.only(right: 16.0),
                                   child: GestureDetector(
@@ -201,7 +206,7 @@ class _MainScreenState extends State<MainScreen> {
                                         showSpinner = true;
                                       });
                                       await getDataMeteo(e);
-                                      if(!mounted) return;
+                                      if (!mounted) return;
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
                                         return PlaceView(
@@ -234,7 +239,8 @@ class _MainScreenState extends State<MainScreen> {
                                               ),
                                             ),
                                             Container(
-                                              padding: const EdgeInsets.all(16.0),
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
                                               alignment: Alignment.centerLeft,
                                               child: Text('${e.summary}'),
                                             ),
@@ -275,14 +281,14 @@ class _MainScreenState extends State<MainScreen> {
                                     showSpinner = true;
                                   });
                                   await getDataMeteo(e);
-                                  if(!mounted) return;
+                                  if (!mounted) return;
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                        return PlaceView(
-                                          placeInfo: e,
-                                          weather: weather,
-                                        );
-                                      }));
+                                    return PlaceView(
+                                      placeInfo: e,
+                                      weather: weather,
+                                    );
+                                  }));
                                   setState(() {
                                     showSpinner = false;
                                   });
@@ -296,8 +302,8 @@ class _MainScreenState extends State<MainScreen> {
                                           title: Text(e.name!),
                                           subtitle:
                                               Text('${e.price} DZD for entry'),
-                                          trailing:
-                                              const Icon(Icons.favorite_outline),
+                                          trailing: const Icon(
+                                              Icons.favorite_outline),
                                         ),
                                         SizedBox(
                                           height: 200.0,
