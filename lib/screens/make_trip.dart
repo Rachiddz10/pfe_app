@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pfe_app/apis/make_trip_api.dart';
 import 'package:pfe_app/constants.dart';
+import 'package:pfe_app/core/geo_location.dart';
 import 'package:pfe_app/screens/path_screen.dart';
-
-
 
 class MakeTrip extends StatefulWidget {
   const MakeTrip({this.name, Key? key}) : super(key: key);
@@ -14,30 +14,31 @@ class MakeTrip extends StatefulWidget {
 }
 
 class _MakeTripState extends State<MakeTrip> {
-
   String? cityName;
 
   bool monument = false;
   bool mosque = false;
   bool museum = false;
-  bool rural = false;
-  bool stadium = false;
   bool park = false;
+  bool naturalPark = false;
+
   Color colorMonument = kColorNotSelected;
   Color colorMosque = kColorNotSelected;
   Color colorMuseum = kColorNotSelected;
-  Color colorRural = kColorNotSelected;
-  Color colorStadium = kColorNotSelected;
+  Color colorNaturalPark = kColorNotSelected;
   Color colorPark = kColorNotSelected;
 
   Color colorTextMonument = kTextColorNotSelected;
   Color colorTextMosque = kTextColorNotSelected;
   Color colorTextMuseum = kTextColorNotSelected;
-  Color colorTextRural = kTextColorNotSelected;
-  Color colorTextStadium = kTextColorNotSelected;
+  Color colorTextNaturalPark = kTextColorNotSelected;
   Color colorTextPark = kTextColorNotSelected;
 
   bool isChecked = false;
+
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController timeController = TextEditingController();
+  final TextEditingController distanceController = TextEditingController();
 
   Checkbox getCheckBox() {
     Color getColor(Set<MaterialState> states) {
@@ -64,10 +65,11 @@ class _MakeTripState extends State<MakeTrip> {
 
   @override
   void initState() {
-    cityName = widget.name;
+    if (widget.name != null) {
+      cityName = widget.name;
+    }
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -108,9 +110,11 @@ class _MakeTripState extends State<MakeTrip> {
                           setState(() {
                             if (monument == false) {
                               colorMonument = kColorSelected;
+                              colorTextMonument = kTextColorSelected;
                               monument = true;
                             } else {
                               colorMonument = kColorNotSelected;
+                              colorTextMonument = kTextColorNotSelected;
                               monument = false;
                             }
                           });
@@ -122,13 +126,14 @@ class _MakeTripState extends State<MakeTrip> {
                             color: colorMonument,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'Monuments',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 20.0,
+                                color: colorTextMonument,
                               ),
                             ),
                           ),
@@ -141,9 +146,11 @@ class _MakeTripState extends State<MakeTrip> {
                           setState(() {
                             if (mosque == false) {
                               colorMosque = kColorSelected;
+                              colorTextMosque = kTextColorSelected;
                               mosque = true;
                             } else {
                               colorMosque = kColorNotSelected;
+                              colorTextMosque = kTextColorNotSelected;
                               mosque = false;
                             }
                           });
@@ -155,13 +162,14 @@ class _MakeTripState extends State<MakeTrip> {
                             color: colorMosque,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'Mosques',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 20.0,
+                                color: colorTextMosque,
                               ),
                             ),
                           ),
@@ -181,9 +189,11 @@ class _MakeTripState extends State<MakeTrip> {
                           setState(() {
                             if (museum == false) {
                               colorMuseum = kColorSelected;
+                              colorTextMuseum = kTextColorSelected;
                               museum = true;
                             } else {
                               colorMuseum = kColorNotSelected;
+                              colorTextMuseum = kTextColorNotSelected;
                               museum = false;
                             }
                           });
@@ -195,13 +205,14 @@ class _MakeTripState extends State<MakeTrip> {
                             color: colorMuseum,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'Museum',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 20.0,
+                                color: colorTextMuseum,
                               ),
                             ),
                           ),
@@ -212,12 +223,14 @@ class _MakeTripState extends State<MakeTrip> {
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
-                            if (rural == false) {
-                              colorRural = kColorSelected;
-                              rural = true;
+                            if (park == false) {
+                              colorPark = kColorSelected;
+                              colorTextPark = kTextColorSelected;
+                              park = true;
                             } else {
-                              colorRural = kColorNotSelected;
-                              rural = false;
+                              colorPark = kColorNotSelected;
+                              colorTextPark = kTextColorNotSelected;
+                              park = false;
                             }
                           });
                         },
@@ -225,16 +238,17 @@ class _MakeTripState extends State<MakeTrip> {
                           margin: const EdgeInsets.symmetric(
                               vertical: 15.0, horizontal: 25.0),
                           decoration: BoxDecoration(
-                            color: colorRural,
+                            color: colorPark,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'Rural Places',
+                              'Parks',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 20.0,
+                                color: colorTextPark,
                               ),
                             ),
                           ),
@@ -252,12 +266,14 @@ class _MakeTripState extends State<MakeTrip> {
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
-                            if (stadium == false) {
-                              colorStadium = kColorSelected;
-                              stadium = true;
+                            if (naturalPark == false) {
+                              colorNaturalPark = kColorSelected;
+                              colorTextNaturalPark = kTextColorSelected;
+                              naturalPark = true;
                             } else {
-                              colorStadium = kColorNotSelected;
-                              stadium = false;
+                              colorNaturalPark = kColorNotSelected;
+                              colorTextNaturalPark = kTextColorNotSelected;
+                              naturalPark = false;
                             }
                           });
                         },
@@ -265,49 +281,17 @@ class _MakeTripState extends State<MakeTrip> {
                           margin: const EdgeInsets.symmetric(
                               vertical: 15.0, horizontal: 25.0),
                           decoration: BoxDecoration(
-                            color: colorStadium,
+                            color: colorNaturalPark,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'Stadiums',
+                              'Natural Parks',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 20.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (park == false) {
-                              colorPark = kColorSelected;
-                              park = true;
-                            } else {
-                              colorPark = kColorNotSelected;
-                              park = false;
-                            }
-                          });
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 25.0),
-                          decoration: BoxDecoration(
-                            color: colorPark,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              'Parks',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 20.0,
+                                color: colorTextNaturalPark,
                               ),
                             ),
                           ),
@@ -319,46 +303,190 @@ class _MakeTripState extends State<MakeTrip> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                Card(
+                /*Card(
                   color: Colors.grey[50],
                   elevation: 0,
-                  child: ListTile(
-                    title: const Text(
-                      'Free to visit: ',
-                      style: TextStyle(
-                        fontSize: 20.0,
+                  child: Column(
+                    children: [
+                      /*ListTile(
+                        title: const Text(
+                          'Free to visit: ',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
+                        trailing: getCheckBox(),
+                      ),*/
+                      ListTile(
+                        title: const Text(
+                          'Price:',
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                        trailing: TextField(
+                          onChanged: (value) {},
+                          decoration: const InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    trailing: getCheckBox(),
+                    ],
                   ),
                 ),
                 const SizedBox(
                   height: 20.0,
-                ),
-                Card(
-                  color: Colors.grey[50],
-                  elevation: 0,
-                  child: ListTile(
-                    leading: const Text(
-                      'Not Further than: ',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
-                    title: TextField(
-                      onChanged: (value) {},
-                      decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                          )),
-                    ),
-                    trailing: const Text(
-                      'Km',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                      ),
+                ),*/
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Card(
+
+                    color: Colors.grey[50],
+                    elevation: 0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(
+                              top: 8.0, right: 8.0, left: 8.0),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Price: ',
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                              Flexible(
+                                child: TextField(
+                                  controller: priceController,
+                                  onChanged: (value) {},
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 90.0,
+                                margin: const EdgeInsets.only(left: 10.0),
+                                child: const Center(
+                                  child: Text(
+                                    'DZD',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(
+                              top: 8.0, right: 8.0, left: 8.0),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Time: ',
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                              Flexible(
+                                child: TextField(
+                                  controller: timeController,
+                                  onChanged: (value) {},
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 90.0,
+                                margin: const EdgeInsets.only(left: 10.0),
+                                child: const Center(
+                                  child: Text(
+                                    'Minutes',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(
+                              top: 8.0, right: 8.0, left: 8.0, bottom: 8.0),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Distance: ',
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                              Flexible(
+                                child: TextField(
+                                  controller: distanceController,
+                                  onChanged: (value) {},
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 90.0,
+                                margin: const EdgeInsets.only(left: 10.0),
+                                child: const Center(
+                                  child: Text(
+                                    'Meters',
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -375,7 +503,18 @@ class _MakeTripState extends State<MakeTrip> {
                     color: const Color(0xFF536DFE),
                     borderRadius: BorderRadius.circular(10.0),
                     child: MaterialButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        Location location = Location();
+                        await location.getCurrentLocation();
+                        List list = await MakeTripAPI().makeVoyage(
+                            1,
+                            location.lat!,
+                            location.long!,
+                            ["1", "2", "4", "5", "6"],
+                            0,
+                            -1,
+                            0);
+                        if (!mounted) return;
                         Navigator.pushNamed(context, PathScreen.id);
                       },
                       minWidth: 250.0,

@@ -24,10 +24,10 @@ class PlaceStructure {
     required this.summary,
   });
 
-  static Future<PlaceStructure> fromJsonTranslated(int idNum, Map<String, dynamic> json, List<dynamic> jsonMeta, List<dynamic> jsonGeo, Map<String, dynamic> jsonThumb) async {
+  static Future<PlaceStructure> fromJsonTranslated(int idNum, Map<String, dynamic> json) async {
     String? cityName = json['name'];
     String? cityDescription = json['description'];
-    String? citySummary = jsonThumb['summary'];
+    String? citySummary = json['summary'];
     if(Language.language.languageCode == 'fr') {
       if(cityDescription != null) {
         cityDescription = await TranslationAPI.translate(cityDescription, 'fr');
@@ -49,10 +49,10 @@ class PlaceStructure {
       name: cityName,
       description: cityDescription,
       thumb: json['thumb'],
-      price: jsonMeta[0]['price'],
-      time: jsonMeta[0]['time'],
-      lat: jsonGeo[0]['lat'],
-      long: jsonGeo[0]['long'],
+      price: json['meta'][0]['price'],
+      time: json['meta'][0]['time'],
+      lat: json['geo'][0]['lat'],
+      long: json['geo'][0]['long'],
       summary: citySummary,
     );
     return place;

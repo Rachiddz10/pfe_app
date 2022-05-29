@@ -31,8 +31,6 @@ class LocationService {
     final String url =
         'https://maps.googleapis.com/maps/api/directions/json?origin=$origin&destination=$destination&key=$key';
 
-
-
     var response = await http.get(Uri.parse(url));
     var json = convert.jsonDecode(response.body);
     var results = {
@@ -44,7 +42,6 @@ class LocationService {
       'polyline_decoded': PolylinePoints().decodePolyline(json['routes'][0]['overview_polyline']['points']),
     };
     return results;
-
   }
 
   Future<Map<String, dynamic>> getDirectionWithLatLng(LatLng origin, LatLng destination) async {
@@ -63,6 +60,7 @@ class LocationService {
       'polyline': json['routes'][0]['overview_polyline']['points'],
       'polyline_decoded': PolylinePoints().decodePolyline(json['routes'][0]['overview_polyline']['points']),
       'distance': json['routes'][0]['legs'][0]['distance']['text'],
+      'duration': json['routes'][0]['legs'][0]['duration']['text'],
     };
     return results;
 

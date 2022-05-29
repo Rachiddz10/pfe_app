@@ -10,20 +10,10 @@ class PlaceInfo {
       List<PlaceStructure> listPlacesInfo = [];
       final http.Response response = await http.get(
           Uri.parse('$kURl/$id/$idNumber/info'));
-      final http.Response responseMeta = await http.get(
-          Uri.parse('$kURl/$id/$idNumber/meta'));
-      final http.Response responseGeo = await http.get(
-          Uri.parse('$kURl/$id/$idNumber/geo'));
-      final http.Response responseThumb = await http.get(
-          Uri.parse(('$kURl/$id/$idNumber/thumb')));
       var json = jsonDecode(response.body);
-      var jsonMeta = jsonDecode(responseMeta.body);
-      var jsonGeo = jsonDecode(responseGeo.body);
-      var jsonThumb = jsonDecode(responseThumb.body);
-      if (response.statusCode == 200 && responseMeta.statusCode == 200
-          && responseGeo.statusCode == 200 && responseThumb.statusCode == 200) {
+      if (response.statusCode == 200) {
         listPlacesInfo.add(await PlaceStructure.fromJsonTranslated(
-            idNumber, json, jsonMeta, jsonGeo, jsonThumb));
+            idNumber, json));
         return listPlacesInfo;
       } else {
         throw Exception(' Failed to load Places');

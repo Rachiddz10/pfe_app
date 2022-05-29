@@ -130,6 +130,7 @@ class PlaceMapState extends State<PlaceMap> {
             LatLng(siteLatitude!, siteLongitude!),
           );
           distance = directions['distance'];
+          //print('heloooooooo ! ${directions['duration']}');
           taped = true;
           _goToPlace(
             directions['start_location']['lat'],
