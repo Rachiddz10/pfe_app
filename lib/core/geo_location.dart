@@ -1,36 +1,35 @@
-import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:location/location.dart';
 
-class Location {
+class LocationGetter {
   double? lat;
   double? long;
 
   Future<void> getCurrentLocation() async {
-    if (await Permission.speech.isPermanentlyDenied) {
-      // The user opted to never again see the permission request dialog for this
-      // app. The only way to change the permission's status now is to let the
-      // user manually enable it in the system settings.
-      openAppSettings();
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
     }
-    // You can can also directly ask the permission about its status.
-    if (await Permission.location.isRestricted) {
-      // The OS restricts access, for example because of parental controls.
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
     }
-    if (await Permission.locationWhenInUse.serviceStatus.isEnabled) {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.low);
-      long = position.longitude;
-      lat = position.latitude;
-    }
-    // You can request multiple permissions at once.
-    await [
-      Permission.location,    //Permission.storage,
-    ].request();
-    //print(statuses[Permission.location]);
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low);
-    long = position.longitude;
-    lat = position.latitude;
+
+    locationData = await location.getLocation();
+    lat = locationData.latitude;
+    long = locationData.longitude;
   }
 
   void setLatLng(String latitude, String longitude) {

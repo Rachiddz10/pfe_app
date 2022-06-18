@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pfe_app/apis/places_api.dart';
+import 'package:pfe_app/components/user.dart';
 import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/main_screen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -149,7 +150,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             child: AnimatedTextKit(
                               animatedTexts: [
                                 WavyAnimatedText(
-                                  'A breif welcoming description',
+                                  User.first != '' ? 'Welcome Mr. ${User.first}' : 'welcomes you',
                                   textStyle: const TextStyle(
                                     fontSize: 22.0,
                                     color: Colors.white,
@@ -178,6 +179,9 @@ class _SplashScreenState extends State<SplashScreen> {
                                   setState(() {
                                     showSpinner = true;
                                   });
+                                  /*LocationGetter location = LocationGetter();
+                                  await location.getCurrentLocation();
+                                  List<Place> nearbyPlaces = await NearbyPlacesAPI().fetchNearbyPlaces(location.long!, location.lat!, id!, 80);*/
                                   await getPlacesApi(id!);
                                   listPlaceInfo = await getPlacesInfo(id!);
                                   if (!mounted) return;

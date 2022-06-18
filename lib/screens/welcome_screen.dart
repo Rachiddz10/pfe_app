@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+
 import 'package:pfe_app/screens/loading_screen.dart';
 import 'package:pfe_app/screens/login_screen.dart';
 import 'package:pfe_app/screens/register_screen.dart';

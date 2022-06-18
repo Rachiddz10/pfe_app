@@ -504,7 +504,7 @@ class _MakeTripState extends State<MakeTrip> {
                     borderRadius: BorderRadius.circular(10.0),
                     child: MaterialButton(
                       onPressed: () async {
-                        Location location = Location();
+                        LocationGetter location = LocationGetter();
                         await location.getCurrentLocation();
                         List list = await MakeTripAPI().makeVoyage(
                             1,

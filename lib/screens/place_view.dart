@@ -94,7 +94,7 @@ class _PlaceViewState extends State<PlaceView> {
 
   //-----------------------------------
 
-  Location location = Location();
+  LocationGetter location = LocationGetter();
   Weather? weather;
 
   void getLocation() async {
@@ -370,7 +370,7 @@ class _PlaceViewState extends State<PlaceView> {
                           borderRadius: BorderRadius.circular(15.0),
                           child: MaterialButton(
                             onPressed: () {
-                              Location site = Location();
+                              LocationGetter site = LocationGetter();
                               site.setLatLng(list!.lat!, list!.long!);
                               _stop();
                               Navigator.push(context,

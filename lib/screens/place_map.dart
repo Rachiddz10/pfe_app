@@ -8,8 +8,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PlaceMap extends StatefulWidget {
   static const String id = 'PlaceMap';
-  final Location? location;
-  final Location? sitePosition;
+  final LocationGetter? location;
+  final LocationGetter? sitePosition;
 
   const PlaceMap({required this.sitePosition, required this.location, Key? key}) : super(key: key);
 
@@ -107,42 +107,44 @@ class PlaceMapState extends State<PlaceMap> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.mapOfPlace),
-        centerTitle: true,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.mapOfPlace),
+          centerTitle: true,
+        ),
+        body: GoogleMap(
+          markers: _markers,
+          polygons: _polygons,
+          polylines: _polylines,
+          mapType: MapType.hybrid,
+          initialCameraPosition: getCameraPosition(),
+          //initialCameraPosition: getPosition(),
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () async {
+            var directions = await LocationService().getDirectionWithLatLng(
+              LatLng(lati!, longi!),
+              LatLng(siteLatitude!, siteLongitude!),
+            );
+            distance = directions['distance'];
+            //print('heloooooooo ! ${directions['duration']}');
+            taped = true;
+            _goToPlace(
+              directions['start_location']['lat'],
+              directions['start_location']['lng'],
+              directions['bounds_ne'],
+              directions['bounds_sw'],
+            );
+            _setPolyline(directions['polyline_decoded']);
+          },
+          label: taped ? Text('${AppLocalizations.of(context)!.itineraryWithDistance} $distance') : Text(AppLocalizations.of(context)!.itinerary),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       ),
-      body: GoogleMap(
-        markers: _markers,
-        polygons: _polygons,
-        polylines: _polylines,
-        mapType: MapType.hybrid,
-        initialCameraPosition: getCameraPosition(),
-        //initialCameraPosition: getPosition(),
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          var directions = await LocationService().getDirectionWithLatLng(
-            LatLng(lati!, longi!),
-            LatLng(siteLatitude!, siteLongitude!),
-          );
-          distance = directions['distance'];
-          //print('heloooooooo ! ${directions['duration']}');
-          taped = true;
-          _goToPlace(
-            directions['start_location']['lat'],
-            directions['start_location']['lng'],
-            directions['bounds_ne'],
-            directions['bounds_sw'],
-          );
-          _setPolyline(directions['polyline_decoded']);
-        },
-        label: taped ? Text('${AppLocalizations.of(context)!.itineraryWithDistance} $distance') : Text(AppLocalizations.of(context)!.itinerary),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 

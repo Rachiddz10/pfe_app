@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:pfe_app/components/user.dart';
 import 'package:pfe_app/screens/city_screen.dart';
 import 'package:pfe_app/screens/explore.dart';
 import 'package:pfe_app/screens/filter.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      initialRoute: '/',
+      initialRoute: User.first == '' ? '/' : LoadingScreen.id,
       routes: {
         '/': (context) => const WelcomeScreen(),
         WelcomeScreen.id: (context) => const WelcomeScreen(),

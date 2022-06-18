@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pfe_app/components/place_id.dart';
 import 'package:pfe_app/components/place_structure.dart';
+import 'package:pfe_app/components/user.dart';
 import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/make_trip.dart';
 import 'package:pfe_app/screens/place_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pfe_app/screens/welcome_screen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import '../apis/weather_api.dart';
 import '../components/weather.dart';
 
@@ -90,30 +92,99 @@ class _MainScreenState extends State<MainScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 30.0),
-                      child: TextField(
-                        onChanged: (value) {},
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          suffixIcon: const Icon(
-                            Icons.search,
-                            color: Colors.black54,
-                          ),
-                          hintText: AppLocalizations.of(context)!.search,
-                          hintStyle: const TextStyle(
-                            color: Colors.grey,
-                          ),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10.0),
+                    User.last == ''
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 30.0),
+                            child: TextField(
+                              onChanged: (value) {},
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                suffixIcon: const Icon(
+                                  Icons.search,
+                                  color: Colors.black54,
+                                ),
+                                hintText: AppLocalizations.of(context)!.search,
+                                hintStyle: const TextStyle(
+                                  color: Colors.grey,
+                                ),
+                                border: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : ListTile(
+                            title: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 20.0),
+                              child: TextField(
+                                onChanged: (value) {},
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  suffixIcon: const Icon(
+                                    Icons.search,
+                                    color: Colors.black54,
+                                  ),
+                                  hintText:
+                                      AppLocalizations.of(context)!.search,
+                                  hintStyle: const TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                  border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            trailing: Material(
+                              elevation: 3.0,
+                              borderRadius: BorderRadius.circular(5.0),
+                              child: MaterialButton(
+                                minWidth: 15,
+                                onPressed: () {
+                                  Alert(
+                                    context: context,
+                                    title: 'Are you sure you want to log out?',
+                                    buttons: [
+                                      DialogButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          'No',
+                                          style: TextStyle(
+                                              color: Colors.white, fontSize: 20),
+                                        ),
+                                      ),
+                                      DialogButton(
+                                        onPressed: () {
+                                          User.logoutUser();
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const WelcomeScreen()));
+                                        },
+                                        child: const Text(
+                                          'Yes',
+                                          style: TextStyle(
+                                              color: Colors.white, fontSize: 20),
+                                        ),
+                                      ),
+                                    ],
+                                  ).show();
+                                },
+                                child: const Icon(Icons.logout_outlined),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -129,8 +200,7 @@ class _MainScreenState extends State<MainScreen> {
                                 Navigator.push(
                                   (context),
                                   MaterialPageRoute(
-                                    builder: (context) => const MakeTrip(
-                                    ),
+                                    builder: (context) => const MakeTrip(),
                                   ),
                                 );
                               },
@@ -205,6 +275,7 @@ class _MainScreenState extends State<MainScreen> {
                                       setState(() {
                                         showSpinner = true;
                                       });
+
                                       await getDataMeteo(e);
                                       if (!mounted) return;
                                       Navigator.push(context,
