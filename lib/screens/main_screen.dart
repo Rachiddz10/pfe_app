@@ -27,6 +27,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   //-----------prepare Weather for nex screen ------
   Weather? weather;
+  bool likedPlace = false;
 
   Future getDataMeteo(PlaceStructure placeStructure) async {
     weather = await WeatherAPI().getDataMeteo(placeStructure);
@@ -44,6 +45,7 @@ class _MainScreenState extends State<MainScreen> {
     id = widget.idNumber;
     list = widget.list;
     listOfPlaces = widget.listOfPlaces;
+    likedPlace = false;
   }
 
   //-----------------------------------
@@ -160,7 +162,8 @@ class _MainScreenState extends State<MainScreen> {
                                         child: const Text(
                                           'No',
                                           style: TextStyle(
-                                              color: Colors.white, fontSize: 20),
+                                              color: Colors.white,
+                                              fontSize: 20),
                                         ),
                                       ),
                                       DialogButton(
@@ -175,7 +178,8 @@ class _MainScreenState extends State<MainScreen> {
                                         child: const Text(
                                           'Yes',
                                           style: TextStyle(
-                                              color: Colors.white, fontSize: 20),
+                                              color: Colors.white,
+                                              fontSize: 20),
                                         ),
                                       ),
                                     ],
@@ -298,8 +302,22 @@ class _MainScreenState extends State<MainScreen> {
                                               title: Text(e.name!),
                                               subtitle: Text(
                                                   '${e.price} ${AppLocalizations.of(context)!.pricing}'),
-                                              trailing: const Icon(
-                                                  Icons.favorite_outline),
+                                              trailing: GestureDetector(
+                                                onTap: () {
+                                                  setState((){
+                                                    if(likedPlace) {
+                                                      likedPlace = false;
+                                                    } else {
+                                                      likedPlace = true;
+                                                    }
+                                                  });
+                                                },
+                                                child: Icon(
+                                                  likedPlace ? Icons.favorite : Icons.favorite_border,
+                                                  color: likedPlace ? Colors.red : null,
+                                                  semanticLabel: likedPlace ? 'Remove from places liked' : 'Add to places liked',
+                                                ),
+                                              ),
                                             ),
                                             SizedBox(
                                               height: 200.0,

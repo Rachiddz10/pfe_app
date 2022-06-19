@@ -861,3 +861,71 @@ class Location {
 }
 
  */
+
+/* weather alert
+GestureDetector(
+                            onTap: () {
+                              Alert(
+                                  context: context,
+                                  title: AppLocalizations.of(context)!.weather,
+                                  content: Column(
+                                    children: [
+                                      ListTile(
+                                        title: Text(
+                                            AppLocalizations.of(context)!
+                                                .temperature),
+                                        trailing: Text('${weather!.temp!}°'),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                            AppLocalizations.of(context)!
+                                                .description),
+                                        trailing: Text(
+                                            '${weather!.weatherDescription}'),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                            AppLocalizations.of(context)!
+                                                .humidity),
+                                        trailing:
+                                            Text('${weather!.humidity} %'),
+                                      ),
+                                    ],
+                                  ),
+                                  buttons: [
+                                    DialogButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.close,
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      ),
+                                    )
+                                  ]).show();
+                            },
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.only(top: 10.0, right: 10.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.grey,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.black,
+                                    blurRadius: 2.0,
+                                    spreadRadius: 0.0,
+                                    offset: Offset(2.0,
+                                        2.0), // shadow direction: bottom right
+                                  )
+                                ],
+                              ),
+                              child: Image.network(
+                                '${weather!.iconURL}',
+                                colorBlendMode: BlendMode.color,
+                                fit: BoxFit.cover,
+                                width: 80.0,
+                                height: 60.0,
+                              ),
+                            ),
+                          ),
+ */

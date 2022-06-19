@@ -9,7 +9,6 @@ import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/gallery.dart';
 import 'package:pfe_app/core/geo_location.dart';
 import 'package:pfe_app/screens/place_map.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../components/place_structure.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -54,6 +53,7 @@ class _PlaceViewState extends State<PlaceView> {
 
   List<String>? imgList;
   List<Widget>? imageSliders;
+  bool likedPlace = false;
 
   void initImage() {
     imgList = [
@@ -111,6 +111,7 @@ class _PlaceViewState extends State<PlaceView> {
     list = widget.placeInfo;
     description = list!.description;
     weather = widget.weather;
+    likedPlace = false;
     initImage();
     initializeTts();
     getLocation();
@@ -271,66 +272,21 @@ class _PlaceViewState extends State<PlaceView> {
                           ),
                           trailing: GestureDetector(
                             onTap: () {
-                              Alert(
-                                  context: context,
-                                  title: AppLocalizations.of(context)!.weather,
-                                  content: Column(
-                                    children: [
-                                      ListTile(
-                                        title: Text(
-                                            AppLocalizations.of(context)!
-                                                .temperature),
-                                        trailing: Text('${weather!.temp!}°'),
-                                      ),
-                                      ListTile(
-                                        title: Text(
-                                            AppLocalizations.of(context)!
-                                                .description),
-                                        trailing: Text(
-                                            '${weather!.weatherDescription}'),
-                                      ),
-                                      ListTile(
-                                        title: Text(
-                                            AppLocalizations.of(context)!
-                                                .humidity),
-                                        trailing:
-                                            Text('${weather!.humidity} %'),
-                                      ),
-                                    ],
-                                  ),
-                                  buttons: [
-                                    DialogButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.close,
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 20),
-                                      ),
-                                    )
-                                  ]).show();
+                              setState((){
+                                if(likedPlace) {
+                                  likedPlace = false;
+                                } else {
+                                  likedPlace = true;
+                                }
+                              });
                             },
                             child: Container(
-                              margin:
-                                  const EdgeInsets.only(top: 10.0, right: 10.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Colors.grey,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black,
-                                    blurRadius: 2.0,
-                                    spreadRadius: 0.0,
-                                    offset: Offset(2.0,
-                                        2.0), // shadow direction: bottom right
-                                  )
-                                ],
-                              ),
-                              child: Image.network(
-                                '${weather!.iconURL}',
-                                colorBlendMode: BlendMode.color,
-                                fit: BoxFit.cover,
-                                width: 80.0,
-                                height: 60.0,
+                              margin: const EdgeInsets.only(top: 10.0, right: 10.0),
+                              child: Icon(
+                                likedPlace ? Icons.favorite : Icons.favorite_border,
+                                size: 40.0,
+                                color: likedPlace ? Colors.red : null,
+                                semanticLabel: likedPlace ? 'Remove from places liked' : 'Add to places liked',
                               ),
                             ),
                           ),
@@ -469,6 +425,38 @@ class _PlaceViewState extends State<PlaceView> {
                             ),
                           ),
                           ListTile(
+                            title: Text(
+                              AppLocalizations.of(context)!.temperature,
+                              style: const TextStyle(
+                                fontFamily: 'Lobster',
+                                fontSize: 20.0,
+                              ),
+                            ),
+                            trailing: Text(
+                              '${weather!.temp!}°',
+                              style: const TextStyle(
+                                fontFamily: 'Lobster',
+                                fontSize: 20.0,
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(
+                              AppLocalizations.of(context)!.description,
+                              style: const TextStyle(
+                                fontFamily: 'Lobster',
+                                fontSize: 20.0,
+                              ),
+                            ),
+                            trailing: Text(
+                              '${weather!.weatherDescription}',
+                              style: const TextStyle(
+                                fontFamily: 'Lobster',
+                                fontSize: 20.0,
+                              ),
+                            ),
+                          ),
+                          ListTile(
                             leading: Text(
                               AppLocalizations.of(context)!.playStopAudio,
                               style: const TextStyle(
@@ -479,13 +467,13 @@ class _PlaceViewState extends State<PlaceView> {
                             trailing: IconButton(
                               icon: isPlaying
                                   ? const Icon(
-                                      Icons.stop_circle_outlined,
-                                      color: Colors.black,
-                                    )
+                                Icons.stop_circle_outlined,
+                                color: Colors.black,
+                              )
                                   : const Icon(
-                                      Icons.play_circle_fill_outlined,
-                                      color: Colors.green,
-                                    ),
+                                Icons.play_circle_fill_outlined,
+                                color: Colors.green,
+                              ),
                               onPressed: () {
                                 isPlaying ? _stop() : _speak(description!);
                               },
