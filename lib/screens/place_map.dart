@@ -124,24 +124,27 @@ class PlaceMapState extends State<PlaceMap> {
             _controller.complete(controller);
           },
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () async {
-            var directions = await LocationService().getDirectionWithLatLng(
-              LatLng(lati!, longi!),
-              LatLng(siteLatitude!, siteLongitude!),
-            );
-            distance = directions['distance'];
-            //print('heloooooooo ! ${directions['duration']}');
-            taped = true;
-            _goToPlace(
-              directions['start_location']['lat'],
-              directions['start_location']['lng'],
-              directions['bounds_ne'],
-              directions['bounds_sw'],
-            );
-            _setPolyline(directions['polyline_decoded']);
-          },
-          label: taped ? Text('${AppLocalizations.of(context)!.itineraryWithDistance} $distance') : Text(AppLocalizations.of(context)!.itinerary),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(top: 70.0),
+          child: FloatingActionButton.extended(
+            onPressed: () async {
+              var directions = await LocationService().getDirectionWithLatLng(
+                LatLng(lati!, longi!),
+                LatLng(siteLatitude!, siteLongitude!),
+              );
+              distance = directions['distance'];
+              //print('heloooooooo ! ${directions['duration']}');
+              taped = true;
+              _goToPlace(
+                directions['start_location']['lat'],
+                directions['start_location']['lng'],
+                directions['bounds_ne'],
+                directions['bounds_sw'],
+              );
+              _setPolyline(directions['polyline_decoded']);
+            },
+            label: taped ? Text('${AppLocalizations.of(context)!.itineraryWithDistance} $distance') : Text(AppLocalizations.of(context)!.itinerary),
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       ),
