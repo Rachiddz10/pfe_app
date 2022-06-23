@@ -1,5 +1,6 @@
 import 'package:pfe_app/components/language.dart';
 import 'package:pfe_app/components/translation.dart';
+import 'package:pfe_app/components/user.dart';
 
 class PlaceStructure {
   final int? idPlace;
@@ -11,6 +12,7 @@ class PlaceStructure {
   final String? lat;
   final String? long;
   final String? summary;
+  bool liked = false;
 
   PlaceStructure({
     required this.idPlace,
@@ -22,6 +24,7 @@ class PlaceStructure {
     required this.lat,
     required this.long,
     required this.summary,
+    required this.liked,
   });
 
   static Future<PlaceStructure> fromJsonTranslated(int idNum, Map<String, dynamic> json) async {
@@ -44,6 +47,10 @@ class PlaceStructure {
         citySummary = await TranslationAPI.translate(citySummary, 'ar');
       }
     }
+    bool check = false;
+    if((User.first!='')&&(User.likedPlaces.contains(idNum))) {
+      check = true;
+    }
     PlaceStructure place = PlaceStructure(
       idPlace: idNum,
       name: cityName,
@@ -54,6 +61,7 @@ class PlaceStructure {
       lat: json['geo'][0]['lat'],
       long: json['geo'][0]['long'],
       summary: citySummary,
+      liked: check,
     );
     return place;
   }

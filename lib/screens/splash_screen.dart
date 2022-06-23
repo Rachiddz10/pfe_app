@@ -76,6 +76,7 @@ class _SplashScreenState extends State<SplashScreen> {
             lat: listOfPlaces[i].lat,
             long: listOfPlaces[i].long,
             summary: listOfPlaces[i].summary,
+            liked: listOfPlaces[i].liked,
           ),
         );
       }
@@ -150,7 +151,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             child: AnimatedTextKit(
                               animatedTexts: [
                                 WavyAnimatedText(
-                                  User.first != '' ? 'Welcome Mr. ${User.first}' : 'welcomes you',
+                                  User.first != '' ? 'Welcome ${User.first}' : 'welcomes you',
                                   textStyle: const TextStyle(
                                     fontSize: 22.0,
                                     color: Colors.white,

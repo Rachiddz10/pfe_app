@@ -2,8 +2,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:pfe_app/apis/gallery_api.dart';
+import 'package:pfe_app/apis/like_place_api.dart';
 import 'package:pfe_app/components/gallery_class.dart';
 import 'package:pfe_app/components/language.dart';
+import 'package:pfe_app/components/user.dart';
 import 'package:pfe_app/components/weather.dart';
 import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/gallery.dart';
@@ -31,6 +33,7 @@ class _PlaceViewState extends State<PlaceView> {
 
   dynamic json;
   List<GalleryClass> listGallery = [];
+  bool showSpinner = false;
 
   Future<List<GalleryClass>> getAllGalleries() async {
     listGallery = [];
@@ -105,13 +108,17 @@ class _PlaceViewState extends State<PlaceView> {
   //--------------- Api of place ---------
   PlaceStructure? list;
 
+  void getLikedPlaceStatus() async {
+    likedPlace = await LikedPlaceAPi().getLikedPlaceState(list!.idPlace);
+  }
+
   @override
   void initState() {
     super.initState();
     list = widget.placeInfo;
     description = list!.description;
     weather = widget.weather;
-    likedPlace = false;
+    getLikedPlaceStatus();
     initImage();
     initializeTts();
     getLocation();
@@ -214,296 +221,579 @@ class _PlaceViewState extends State<PlaceView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: refresh,
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: const AssetImage('images/img_unsplashztpsx.jpg'),
-                colorFilter: ColorFilter.mode(
-                    Colors.green.withOpacity(0.2), BlendMode.saturation),
-                fit: BoxFit.cover,
+    if(User.first!=''){
+      return Scaffold(
+        body: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: refresh,
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: const AssetImage('images/img_unsplashztpsx.jpg'),
+                  colorFilter: ColorFilter.mode(
+                      Colors.green.withOpacity(0.2), BlendMode.saturation),
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            constraints: const BoxConstraints.expand(),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ListTile(
-                          leading: Container(
-                            margin:
-                                const EdgeInsets.only(left: 30.0, top: 20.0),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.black,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Language.language == const Locale('ar')
-                                  ? const Icon(
-                                      Icons.keyboard_arrow_right,
-                                      color: Colors.black,
-                                      size: 30.0,
-                                    )
-                                  : const Icon(
-                                      Icons.keyboard_arrow_left,
-                                      color: Colors.black,
-                                      size: 30.0,
-                                    ),
-                            ),
-                          ),
-                          title: Container(
-                            margin:
-                                const EdgeInsets.only(top: 20.0, right: 30.0),
-                            child: Text(
-                              '${list!.name}',
-                              style: const TextStyle(fontSize: 25.0),
-                            ),
-                          ),
-                          trailing: GestureDetector(
-                            onTap: () {
-                              setState((){
-                                if(likedPlace) {
-                                  likedPlace = false;
-                                } else {
-                                  likedPlace = true;
-                                }
-                              });
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(top: 10.0, right: 10.0),
-                              child: Icon(
-                                likedPlace ? Icons.favorite : Icons.favorite_border,
-                                size: 40.0,
-                                color: likedPlace ? Colors.red : null,
-                                semanticLabel: likedPlace ? 'Remove from places liked' : 'Add to places liked',
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CarouselSlider(
-                          items: imageSliders,
-                          options: CarouselOptions(
-                            height: 300.0,
-                            autoPlay: true,
-                            enlargeCenterPage: true,
-                            enableInfiniteScroll: false,
-                            initialPage: 2,
-                            aspectRatio: 2.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0, bottom: 8.0),
-                        child: Material(
-                          elevation: 5.0,
-                          //color: const Color(0xFF3F51B5),
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: MaterialButton(
-                            onPressed: () {
-                              LocationGetter site = LocationGetter();
-                              site.setLatLng(list!.lat!, list!.long!);
-                              _stop();
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return PlaceMap(
-                                  location: location,
-                                  sitePosition: site,
-                                );
-                              }));
-                            },
-                            minWidth: 150.0,
-                            height: 42.0,
-                            child: Text(
-                              AppLocalizations.of(context)!.visit,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0, bottom: 8.0),
-                        child: Material(
-                          elevation: 5.0,
-                          color: const Color(0xFF3F51B5),
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: MaterialButton(
-                            onPressed: () async {
-                              listGallery = await getAllGalleries();
-                              _stop();
-                              if (!mounted) return;
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return Gallery(listGallery: listGallery,);
-                                  },
+              constraints: const BoxConstraints.expand(),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ListTile(
+                            leading: Container(
+                              margin:
+                                  const EdgeInsets.only(left: 30.0, top: 20.0),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black,
                                 ),
-                              );
-                            },
-                            minWidth: 150.0,
-                            height: 42.0,
-                            child: Text(
-                              AppLocalizations.of(context)!.gallery,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Language.language == const Locale('ar')
+                                    ? const Icon(
+                                        Icons.keyboard_arrow_right,
+                                        color: Colors.black,
+                                        size: 30.0,
+                                      )
+                                    : const Icon(
+                                        Icons.keyboard_arrow_left,
+                                        color: Colors.black,
+                                        size: 30.0,
+                                      ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Card(
-                      color: const Color(0xFFEEB5C9),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Text(
-                              AppLocalizations.of(context)!.pricePlaceView,
-                              style: const TextStyle(
-                                fontFamily: 'Lobster',
-                                fontSize: 20.0,
+                            title: Container(
+                              margin:
+                                  const EdgeInsets.only(top: 20.0, right: 30.0),
+                              child: Text(
+                                '${list!.name}',
+                                style: const TextStyle(fontSize: 25.0),
                               ),
                             ),
-                            trailing: Text(
-                              '${list!.price} ${AppLocalizations.of(context)!.pricePlaceViewResult}',
-                              style: const TextStyle(
-                                fontFamily: 'Lobster',
-                                fontSize: 20.0,
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            title: Text(
-                              AppLocalizations.of(context)!.timePlaceView,
-                              style: const TextStyle(
-                                fontFamily: 'Lobster',
-                                fontSize: 20.0,
-                              ),
-                            ),
-                            trailing: Text(
-                              '${list!.time} ${AppLocalizations.of(context)!.timePlaceViewResult}',
-                              style: const TextStyle(
-                                fontFamily: 'Lobster',
-                                fontSize: 20.0,
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            title: Text(
-                              AppLocalizations.of(context)!.temperature,
-                              style: const TextStyle(
-                                fontFamily: 'Lobster',
-                                fontSize: 20.0,
-                              ),
-                            ),
-                            trailing: Text(
-                              '${weather!.temp!}°',
-                              style: const TextStyle(
-                                fontFamily: 'Lobster',
-                                fontSize: 20.0,
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            title: Text(
-                              AppLocalizations.of(context)!.description,
-                              style: const TextStyle(
-                                fontFamily: 'Lobster',
-                                fontSize: 20.0,
-                              ),
-                            ),
-                            trailing: Text(
-                              '${weather!.weatherDescription}',
-                              style: const TextStyle(
-                                fontFamily: 'Lobster',
-                                fontSize: 20.0,
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            leading: Text(
-                              AppLocalizations.of(context)!.playStopAudio,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            //title: Text(temp!.toString()),
-                            trailing: IconButton(
-                              icon: isPlaying
-                                  ? const Icon(
-                                Icons.stop_circle_outlined,
-                                color: Colors.black,
-                              )
-                                  : const Icon(
-                                Icons.play_circle_fill_outlined,
-                                color: Colors.green,
-                              ),
-                              onPressed: () {
-                                isPlaying ? _stop() : _speak(description!);
+                            trailing: GestureDetector(
+                              onTap: () async {
+                                setState(() {
+                                  showSpinner = true;
+                                });
+                                await LikedPlaceAPi()
+                                    .modifyLikedPlaceState(list!);
+                                setState(() {
+                                  if (list!.liked == true) {}
+                                  showSpinner = false;
+                                });
                               },
+                              child: Icon(
+                                (list!.liked == true)
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color:
+                                    (list!.liked == true) ? Colors.red : null,
+                                size: 35.0,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  Flexible(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 20.0),
-                      child: Text(
-                        '${list!.description}',
-                        style: const TextStyle(
-                          fontSize: 18.0,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CarouselSlider(
+                            items: imageSliders,
+                            options: CarouselOptions(
+                              height: 300.0,
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                              enableInfiniteScroll: false,
+                              initialPage: 2,
+                              aspectRatio: 2.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 10.0, bottom: 8.0),
+                          child: Material(
+                            elevation: 5.0,
+                            //color: const Color(0xFF3F51B5),
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: MaterialButton(
+                              onPressed: () {
+                                LocationGetter site = LocationGetter();
+                                site.setLatLng(list!.lat!, list!.long!);
+                                _stop();
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return PlaceMap(
+                                    location: location,
+                                    sitePosition: site,
+                                  );
+                                }));
+                              },
+                              minWidth: 150.0,
+                              height: 42.0,
+                              child: Text(
+                                AppLocalizations.of(context)!.visit,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 10.0, bottom: 8.0),
+                          child: Material(
+                            elevation: 5.0,
+                            color: const Color(0xFF3F51B5),
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: MaterialButton(
+                              onPressed: () async {
+                                listGallery = await getAllGalleries();
+                                _stop();
+                                if (!mounted) return;
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return Gallery(
+                                        listGallery: listGallery,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              minWidth: 150.0,
+                              height: 42.0,
+                              child: Text(
+                                AppLocalizations.of(context)!.gallery,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Card(
+                        color: const Color(0xFFEEB5C9),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: Text(
+                                AppLocalizations.of(context)!.pricePlaceView,
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                              trailing: Text(
+                                '${list!.price} ${AppLocalizations.of(context)!.pricePlaceViewResult}',
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(
+                                AppLocalizations.of(context)!.timePlaceView,
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                              trailing: Text(
+                                '${list!.time} ${AppLocalizations.of(context)!.timePlaceViewResult}',
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(
+                                AppLocalizations.of(context)!.temperature,
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                              trailing: Text(
+                                '${weather!.temp!}°',
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(
+                                AppLocalizations.of(context)!.description,
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                              trailing: Text(
+                                '${weather!.weatherDescription}',
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              leading: Text(
+                                AppLocalizations.of(context)!.playStopAudio,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              //title: Text(temp!.toString()),
+                              trailing: IconButton(
+                                icon: isPlaying
+                                    ? const Icon(
+                                        Icons.stop_circle_outlined,
+                                        color: Colors.black,
+                                      )
+                                    : const Icon(
+                                        Icons.play_circle_fill_outlined,
+                                        color: Colors.green,
+                                      ),
+                                onPressed: () {
+                                  isPlaying ? _stop() : _speak(description!);
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Flexible(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 20.0),
+                        child: Text(
+                          '${list!.description}',
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Scaffold(
+        body: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: refresh,
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: const AssetImage('images/img_unsplashztpsx.jpg'),
+                  colorFilter: ColorFilter.mode(
+                      Colors.green.withOpacity(0.2), BlendMode.saturation),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              constraints: const BoxConstraints.expand(),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ListTile(
+                            leading: Container(
+                              margin:
+                              const EdgeInsets.only(left: 30.0, top: 20.0),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black,
+                                ),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Language.language == const Locale('ar')
+                                    ? const Icon(
+                                  Icons.keyboard_arrow_right,
+                                  color: Colors.black,
+                                  size: 30.0,
+                                )
+                                    : const Icon(
+                                  Icons.keyboard_arrow_left,
+                                  color: Colors.black,
+                                  size: 30.0,
+                                ),
+                              ),
+                            ),
+                            title: Container(
+                              margin:
+                              const EdgeInsets.only(top: 20.0, right: 30.0),
+                              child: Text(
+                                '${list!.name}',
+                                style: const TextStyle(fontSize: 25.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CarouselSlider(
+                            items: imageSliders,
+                            options: CarouselOptions(
+                              height: 300.0,
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                              enableInfiniteScroll: false,
+                              initialPage: 2,
+                              aspectRatio: 2.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding:
+                          const EdgeInsets.only(top: 10.0, bottom: 8.0),
+                          child: Material(
+                            elevation: 5.0,
+                            //color: const Color(0xFF3F51B5),
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: MaterialButton(
+                              onPressed: () {
+                                LocationGetter site = LocationGetter();
+                                site.setLatLng(list!.lat!, list!.long!);
+                                _stop();
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return PlaceMap(
+                                        location: location,
+                                        sitePosition: site,
+                                      );
+                                    }));
+                              },
+                              minWidth: 150.0,
+                              height: 42.0,
+                              child: Text(
+                                AppLocalizations.of(context)!.visit,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                          const EdgeInsets.only(top: 10.0, bottom: 8.0),
+                          child: Material(
+                            elevation: 5.0,
+                            color: const Color(0xFF3F51B5),
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: MaterialButton(
+                              onPressed: () async {
+                                listGallery = await getAllGalleries();
+                                _stop();
+                                if (!mounted) return;
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return Gallery(
+                                        listGallery: listGallery,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              minWidth: 150.0,
+                              height: 42.0,
+                              child: Text(
+                                AppLocalizations.of(context)!.gallery,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Card(
+                        color: const Color(0xFFEEB5C9),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: Text(
+                                AppLocalizations.of(context)!.pricePlaceView,
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                              trailing: Text(
+                                '${list!.price} ${AppLocalizations.of(context)!.pricePlaceViewResult}',
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(
+                                AppLocalizations.of(context)!.timePlaceView,
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                              trailing: Text(
+                                '${list!.time} ${AppLocalizations.of(context)!.timePlaceViewResult}',
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(
+                                AppLocalizations.of(context)!.temperature,
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                              trailing: Text(
+                                '${weather!.temp!}°',
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(
+                                AppLocalizations.of(context)!.description,
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                              trailing: Text(
+                                '${weather!.weatherDescription}',
+                                style: const TextStyle(
+                                  fontFamily: 'Lobster',
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              leading: Text(
+                                AppLocalizations.of(context)!.playStopAudio,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              //title: Text(temp!.toString()),
+                              trailing: IconButton(
+                                icon: isPlaying
+                                    ? const Icon(
+                                  Icons.stop_circle_outlined,
+                                  color: Colors.black,
+                                )
+                                    : const Icon(
+                                  Icons.play_circle_fill_outlined,
+                                  color: Colors.green,
+                                ),
+                                onPressed: () {
+                                  isPlaying ? _stop() : _speak(description!);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Flexible(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 20.0),
+                        child: Text(
+                          '${list!.description}',
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
   }
 }
