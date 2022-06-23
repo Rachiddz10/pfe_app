@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pfe_app/apis/like_place_api.dart';
+import 'package:pfe_app/components/nearby_place_info.dart';
 import 'package:pfe_app/components/place_id.dart';
 import 'package:pfe_app/components/place_structure.dart';
 import 'package:pfe_app/components/user.dart';
@@ -19,13 +20,15 @@ class MainScreen extends StatefulWidget {
       this.idNumber,
       this.list,
       this.listOfPlaces,
-      this.nearbyPlaces})
+      this.nearbyPlaces,
+      this.idsNearbyPlaces})
       : super(key: key);
   static const String id = 'main_screen';
   final int? idNumber;
   final List<PlaceCard>? list;
   final List<PlaceStructure>? listOfPlaces;
   final List<PlaceStructure>? nearbyPlaces;
+  final List<NearbyPlaceInfo>? idsNearbyPlaces;
 
   @override
   State<MainScreen> createState() => _MainScreenState();

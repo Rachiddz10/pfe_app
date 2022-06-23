@@ -206,6 +206,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                       list: listPlaceCard,
                                       listOfPlaces: listPlaceInfo,
                                       nearbyPlaces: listOfNearbyPlaces,
+                                      idsNearbyPlaces: widget.nearbyPlaces,
                                     );
                                   }));
                                   Future.delayed(const Duration(seconds: 3));
