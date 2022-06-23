@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pfe_app/apis/like_place_api.dart';
-import 'package:pfe_app/components/nearby_place_info.dart';
+import 'package:pfe_app/components/nearby_place_card.dart';
 import 'package:pfe_app/components/place_id.dart';
 import 'package:pfe_app/components/place_structure.dart';
 import 'package:pfe_app/components/user.dart';
@@ -20,15 +20,15 @@ class MainScreen extends StatefulWidget {
       this.idNumber,
       this.list,
       this.listOfPlaces,
-      this.nearbyPlaces,
-      this.idsNearbyPlaces})
+      this.nearbyPlacesCards,
+      })
       : super(key: key);
   static const String id = 'main_screen';
   final int? idNumber;
   final List<PlaceCard>? list;
   final List<PlaceStructure>? listOfPlaces;
-  final List<PlaceStructure>? nearbyPlaces;
-  final List<NearbyPlaceInfo>? idsNearbyPlaces;
+  final List<NearbyPlaceCard>? nearbyPlacesCards;
+
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -46,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
   int? id;
   List<PlaceCard>? list;
   List<PlaceStructure>? listOfPlaces;
-  List<PlaceStructure>? listOfNearbyPlaces;
+  List<NearbyPlaceCard>? nearbyPlacesCards;
   bool showSpinner = false;
 
   @override
@@ -55,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
     id = widget.idNumber;
     list = widget.list;
     listOfPlaces = widget.listOfPlaces;
-    listOfNearbyPlaces = widget.nearbyPlaces;
+    nearbyPlacesCards = widget.nearbyPlacesCards;
   }
 
   //-----------------------------------
@@ -239,7 +239,7 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                       ],
                     ),
-                    if (listOfNearbyPlaces!.isNotEmpty)
+                    if (nearbyPlacesCards!.isNotEmpty)
                       Row(
                         children: [
                           Padding(
@@ -255,15 +255,15 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ],
                       ),
-                    if (listOfNearbyPlaces!.isNotEmpty)
-                      if (listOfNearbyPlaces!.length == 1)
+                    if (nearbyPlacesCards!.isNotEmpty)
+                      if (nearbyPlacesCards!.length == 1)
                         SizedBox(
                           width: MediaQuery.of(context).size.width - 50.0,
                           height: 460.0,
                           child: ListView(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
-                            children: listOfNearbyPlaces!
+                            children: nearbyPlacesCards!
                                 .map(
                                   (e) => SizedBox(
                                     width:
@@ -277,19 +277,19 @@ class _MainScreenState extends State<MainScreen> {
                                             showSpinner = true;
                                           });
 
-                                          await getDataMeteo(e);
+                                          await getDataMeteo(e.place);
                                           if (!mounted) return;
                                           await Navigator.push(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
                                             return PlaceView(
-                                              placeInfo: e,
+                                              placeInfo: e.place,
                                               weather: weather,
                                             );
                                           }));
                                           setState(() {
-                                            listOfNearbyPlaces =
-                                                listOfNearbyPlaces;
+                                            nearbyPlacesCards =
+                                                nearbyPlacesCards;
                                             showSpinner = false;
                                           });
                                         },
@@ -299,39 +299,40 @@ class _MainScreenState extends State<MainScreen> {
                                             child: Column(
                                               children: [
                                                 ListTile(
-                                                  title: Text(e.name!),
+                                                  title: Text(e.place.name!),
                                                   subtitle: Text(
-                                                      '${e.price} ${AppLocalizations.of(context)!.pricing}'),
-                                                  trailing: GestureDetector(
+                                                      '${e.place.price} ${AppLocalizations.of(context)!.pricing}'),
+                                                  trailing: Text('${(e.nearbyPlaceInfo.distance/1000).toStringAsFixed(2)} Km'),
+                                                  /*GestureDetector(
                                                     onTap: () async {
                                                       setState(() {
                                                         showSpinner = true;
                                                       });
                                                       await LikedPlaceAPi()
                                                           .modifyLikedPlaceState(
-                                                              e);
+                                                              e.place);
                                                       setState(() {
-                                                        if (e.liked == true) {}
+                                                        if (e.place.liked == true) {}
                                                         showSpinner = false;
                                                       });
                                                     },
                                                     child: Icon(
-                                                      (e.liked == true)
+                                                      (e.place.liked == true)
                                                           ? Icons.favorite
                                                           : Icons
                                                               .favorite_border,
-                                                      color: (e.liked == true)
+                                                      color: (e.place.liked == true)
                                                           ? Colors.red
                                                           : null,
                                                       size: 35.0,
                                                     ),
-                                                  ),
+                                                  ),*/
                                                 ),
                                                 SizedBox(
                                                   height: 200.0,
                                                   child: Ink.image(
                                                     image: NetworkImage(
-                                                        '$kURlForImage/${e.thumb}'),
+                                                        '$kURlForImage/${e.place.thumb}'),
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
@@ -340,7 +341,7 @@ class _MainScreenState extends State<MainScreen> {
                                                       16.0),
                                                   alignment:
                                                       Alignment.centerLeft,
-                                                  child: Text('${e.summary}'),
+                                                  child: Text('${e.place.summary}'),
                                                 ),
                                               ],
                                             ),
@@ -360,7 +361,7 @@ class _MainScreenState extends State<MainScreen> {
                           child: ListView(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
-                            children: listOfNearbyPlaces!
+                            children: nearbyPlacesCards!
                                 .map(
                                   (e) => SizedBox(
                                     width: MediaQuery.of(context).size.width -
@@ -374,19 +375,19 @@ class _MainScreenState extends State<MainScreen> {
                                             showSpinner = true;
                                           });
 
-                                          await getDataMeteo(e);
+                                          await getDataMeteo(e.place);
                                           if (!mounted) return;
                                           await Navigator.push(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
                                             return PlaceView(
-                                              placeInfo: e,
+                                              placeInfo: e.place,
                                               weather: weather,
                                             );
                                           }));
                                           setState(() {
-                                            listOfNearbyPlaces =
-                                                listOfNearbyPlaces;
+                                            nearbyPlacesCards =
+                                                nearbyPlacesCards;
                                             showSpinner = false;
                                           });
                                         },
@@ -396,39 +397,16 @@ class _MainScreenState extends State<MainScreen> {
                                             child: Column(
                                               children: [
                                                 ListTile(
-                                                  title: Text(e.name!),
+                                                  title: Text(e.place.name!),
                                                   subtitle: Text(
-                                                      '${e.price} ${AppLocalizations.of(context)!.pricing}'),
-                                                  trailing: GestureDetector(
-                                                    onTap: () async {
-                                                      setState(() {
-                                                        showSpinner = true;
-                                                      });
-                                                      await LikedPlaceAPi()
-                                                          .modifyLikedPlaceState(
-                                                              e);
-                                                      setState(() {
-                                                        if (e.liked == true) {}
-                                                        showSpinner = false;
-                                                      });
-                                                    },
-                                                    child: Icon(
-                                                      (e.liked == true)
-                                                          ? Icons.favorite
-                                                          : Icons
-                                                              .favorite_border,
-                                                      color: (e.liked == true)
-                                                          ? Colors.red
-                                                          : null,
-                                                      size: 35.0,
-                                                    ),
-                                                  ),
+                                                      '${e.place.price} ${AppLocalizations.of(context)!.pricing}'),
+                                                  trailing: Text('${(e.nearbyPlaceInfo.distance/1000).toStringAsFixed(2)} Km'),
                                                 ),
                                                 SizedBox(
                                                   height: 200.0,
                                                   child: Ink.image(
                                                     image: NetworkImage(
-                                                        '$kURlForImage/${e.thumb}'),
+                                                        '$kURlForImage/${e.place.thumb}'),
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
@@ -437,7 +415,7 @@ class _MainScreenState extends State<MainScreen> {
                                                       16.0),
                                                   alignment:
                                                       Alignment.centerLeft,
-                                                  child: Text('${e.summary}'),
+                                                  child: Text('${e.place.summary}'),
                                                 ),
                                               ],
                                             ),
@@ -654,7 +632,7 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                       ],
                     ),
-                    if (listOfNearbyPlaces!.isNotEmpty)
+                    if (nearbyPlacesCards!.isNotEmpty)
                       Row(
                         children: [
                           Padding(
@@ -670,15 +648,15 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ],
                       ),
-                    if (listOfNearbyPlaces!.isNotEmpty)
-                      if (listOfNearbyPlaces!.length == 1)
+                    if (nearbyPlacesCards!.isNotEmpty)
+                      if (nearbyPlacesCards!.length == 1)
                         SizedBox(
                           width: MediaQuery.of(context).size.width - 50.0,
                           height: 460.0,
                           child: ListView(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
-                            children: listOfNearbyPlaces!
+                            children: nearbyPlacesCards!
                                 .map(
                                   (e) => SizedBox(
                                     width: MediaQuery.of(context).size.width -
@@ -692,19 +670,19 @@ class _MainScreenState extends State<MainScreen> {
                                             showSpinner = true;
                                           });
 
-                                          await getDataMeteo(e);
+                                          await getDataMeteo(e.place);
                                           if (!mounted) return;
                                           Navigator.push(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
                                             return PlaceView(
-                                              placeInfo: e,
+                                              placeInfo: e.place,
                                               weather: weather,
                                             );
                                           }));
                                           setState(() {
-                                            listOfNearbyPlaces =
-                                                listOfNearbyPlaces;
+                                            nearbyPlacesCards =
+                                                nearbyPlacesCards;
                                             showSpinner = false;
                                           });
                                         },
@@ -714,15 +692,16 @@ class _MainScreenState extends State<MainScreen> {
                                             child: Column(
                                               children: [
                                                 ListTile(
-                                                  title: Text(e.name!),
+                                                  title: Text(e.place.name!),
                                                   subtitle: Text(
-                                                      '${e.price} ${AppLocalizations.of(context)!.pricing}'),
+                                                      '${e.place.price} ${AppLocalizations.of(context)!.pricing}'),
+                                                  trailing: Text('${(e.nearbyPlaceInfo.distance/1000).toStringAsFixed(2)} Km'),
                                                 ),
                                                 SizedBox(
                                                   height: 200.0,
                                                   child: Ink.image(
                                                     image: NetworkImage(
-                                                        '$kURlForImage/${e.thumb}'),
+                                                        '$kURlForImage/${e.place.thumb}'),
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
@@ -731,7 +710,7 @@ class _MainScreenState extends State<MainScreen> {
                                                       16.0),
                                                   alignment:
                                                       Alignment.centerLeft,
-                                                  child: Text('${e.summary}'),
+                                                  child: Text('${e.place.summary}'),
                                                 ),
                                               ],
                                             ),
@@ -751,7 +730,7 @@ class _MainScreenState extends State<MainScreen> {
                           child: ListView(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
-                            children: listOfNearbyPlaces!
+                            children: nearbyPlacesCards!
                                 .map(
                                   (e) => SizedBox(
                                     width: MediaQuery.of(context).size.width -
@@ -765,19 +744,19 @@ class _MainScreenState extends State<MainScreen> {
                                             showSpinner = true;
                                           });
 
-                                          await getDataMeteo(e);
+                                          await getDataMeteo(e.place);
                                           if (!mounted) return;
                                           Navigator.push(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
                                             return PlaceView(
-                                              placeInfo: e,
+                                              placeInfo: e.place,
                                               weather: weather,
                                             );
                                           }));
                                           setState(() {
-                                            listOfNearbyPlaces =
-                                                listOfNearbyPlaces;
+                                            nearbyPlacesCards =
+                                                nearbyPlacesCards;
                                             showSpinner = false;
                                           });
                                         },
@@ -787,15 +766,16 @@ class _MainScreenState extends State<MainScreen> {
                                             child: Column(
                                               children: [
                                                 ListTile(
-                                                  title: Text(e.name!),
+                                                  title: Text(e.place.name!),
                                                   subtitle: Text(
-                                                      '${e.price} ${AppLocalizations.of(context)!.pricing}'),
+                                                      '${e.place.price} ${AppLocalizations.of(context)!.pricing}'),
+                                                  trailing: Text('${(e.nearbyPlaceInfo.distance/1000).toStringAsFixed(2)} Km'),
                                                 ),
                                                 SizedBox(
                                                   height: 200.0,
                                                   child: Ink.image(
                                                     image: NetworkImage(
-                                                        '$kURlForImage/${e.thumb}'),
+                                                        '$kURlForImage/${e.place.thumb}'),
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
@@ -804,7 +784,7 @@ class _MainScreenState extends State<MainScreen> {
                                                       16.0),
                                                   alignment:
                                                       Alignment.centerLeft,
-                                                  child: Text('${e.summary}'),
+                                                  child: Text('${e.place.summary}'),
                                                 ),
                                               ],
                                             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pfe_app/apis/places_api.dart';
+import 'package:pfe_app/components/nearby_place_card.dart';
 import 'package:pfe_app/components/user.dart';
 import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/screens/main_screen.dart';
@@ -188,14 +189,12 @@ class _SplashScreenState extends State<SplashScreen> {
                                   List<Place> nearbyPlaces = await NearbyPlacesAPI().fetchNearbyPlaces(location.long!, location.lat!, id!, 80);*/
                                   await getPlacesApi(id!);
                                   listPlaceInfo = await getPlacesInfo(id!);
-                                  List<PlaceStructure> listOfNearbyPlaces = [];
-                                  List<int> idsNearbyPlaces = [];
+                                  List<NearbyPlaceCard> listOfNearbyPlacesCard = [];
                                   for(var e in widget.nearbyPlaces!) {
-                                    idsNearbyPlaces.add(e.id);
-                                  }
-                                  for(var e in listPlaceInfo) {
-                                    if(idsNearbyPlaces.contains(e.idPlace)) {
-                                      listOfNearbyPlaces.add(e);
+                                    for(var f in listPlaceInfo) {
+                                      if(e.id == f.idPlace) {
+                                        listOfNearbyPlacesCard.add(NearbyPlaceCard(f, e));
+                                      }
                                     }
                                   }
                                   if (!mounted) return;
@@ -205,8 +204,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                       idNumber: id,
                                       list: listPlaceCard,
                                       listOfPlaces: listPlaceInfo,
-                                      nearbyPlaces: listOfNearbyPlaces,
-                                      idsNearbyPlaces: widget.nearbyPlaces,
+                                      nearbyPlacesCards: listOfNearbyPlacesCard,
                                     );
                                   }));
                                   Future.delayed(const Duration(seconds: 3));

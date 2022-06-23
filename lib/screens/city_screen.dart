@@ -126,7 +126,7 @@ class _CityScreenState extends State<CityScreen> {
                                   });
                                   LocationGetter locationGetter = LocationGetter();
                                   await locationGetter.getCurrentLocation();
-                                  List<NearbyPlaceInfo> nearbyPlaces = await NearbyPlacesAPI().fetchNearbyPlaces(locationGetter.long!, locationGetter.lat!, e.id!, 35.8);
+                                  List<NearbyPlaceInfo> nearbyPlaces = await NearbyPlacesAPI().fetchNearbyPlaces(locationGetter.long!, locationGetter.lat!, e.id!, 35.9);
                                   if(!mounted) return;
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
