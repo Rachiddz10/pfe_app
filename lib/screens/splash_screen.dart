@@ -7,22 +7,25 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'dart:async';
 import '../apis/places_info_api.dart';
+import '../components/nearby_place_info.dart';
 import '../components/place.dart';
 import '../components/place_id.dart';
 import '../components/place_structure.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen(
-      {this.idNumber,
-      this.name,
-      this.image,
-      Key? key})
-      : super(key: key);
+  const SplashScreen({
+    this.idNumber,
+    this.name,
+    this.image,
+    this.nearbyPlaces,
+    Key? key,
+  }) : super(key: key);
   static const String id = 'splash_screen';
   final int? idNumber;
   final String? name;
   final String? image;
+  final List<NearbyPlaceInfo>? nearbyPlaces;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -40,11 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
     image = widget.image;
   }
 
-
   //------------ Place Api -----------
-
-
-
 
   //-----------------------------------
 
@@ -59,11 +58,12 @@ class _SplashScreenState extends State<SplashScreen> {
       listPlaceCard.add(PlaceCard(id: listOfPlacesId[i].id));
     }
   }
+
   Future<List<PlaceStructure>> getPlacesInfo(int id) async {
     listPlaceInfo = [];
     for (int j = 0; j < listPlaceCard.length; j++) {
       List<PlaceStructure> listOfPlaces =
-      await PlaceInfo().fetchAll(id, listPlaceCard[j].id!);
+          await PlaceInfo().fetchAll(id, listPlaceCard[j].id!);
       for (int i = 0; i < listOfPlaces.length; i++) {
         listPlaceInfo.add(
           PlaceStructure(
@@ -83,6 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
     return listPlaceInfo;
   }
+
   //-----------------------------------
 
   bool showSpinner = false;
@@ -151,7 +152,9 @@ class _SplashScreenState extends State<SplashScreen> {
                             child: AnimatedTextKit(
                               animatedTexts: [
                                 WavyAnimatedText(
-                                  User.first != '' ? 'Welcome ${User.first}' : 'welcomes you',
+                                  User.first != ''
+                                      ? 'Welcome ${User.first}'
+                                      : 'welcomes you',
                                   textStyle: const TextStyle(
                                     fontSize: 22.0,
                                     color: Colors.white,
@@ -185,6 +188,16 @@ class _SplashScreenState extends State<SplashScreen> {
                                   List<Place> nearbyPlaces = await NearbyPlacesAPI().fetchNearbyPlaces(location.long!, location.lat!, id!, 80);*/
                                   await getPlacesApi(id!);
                                   listPlaceInfo = await getPlacesInfo(id!);
+                                  List<PlaceStructure> listOfNearbyPlaces = [];
+                                  List<int> idsNearbyPlaces = [];
+                                  for(var e in widget.nearbyPlaces!) {
+                                    idsNearbyPlaces.add(e.id);
+                                  }
+                                  for(var e in listPlaceInfo) {
+                                    if(idsNearbyPlaces.contains(e.idPlace)) {
+                                      listOfNearbyPlaces.add(e);
+                                    }
+                                  }
                                   if (!mounted) return;
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
@@ -192,6 +205,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                       idNumber: id,
                                       list: listPlaceCard,
                                       listOfPlaces: listPlaceInfo,
+                                      nearbyPlaces: listOfNearbyPlaces,
                                     );
                                   }));
                                   Future.delayed(const Duration(seconds: 3));
