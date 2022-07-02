@@ -6,6 +6,8 @@ import 'package:pfe_app/components/category_place.dart';
 import 'package:pfe_app/constants.dart';
 import 'package:pfe_app/core/geo_location.dart';
 import 'package:pfe_app/screens/path_screen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MakeTrip extends StatefulWidget {
   const MakeTrip({this.name, this.idNumber, this.listOfCategories, Key? key})
@@ -316,28 +318,50 @@ class _MakeTripState extends State<MakeTrip> {
                           if (!distanceChecked) {
                             distance = int.parse(distanceText);
                           }
-                          print('time = $time');
-                          print('price = $price');
-                          print('distance = $distance');
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          LocationGetter location = LocationGetter();
-                          await location.getCurrentLocation();
-                          List list = await MakeTripAPI().makeVoyage(
-                              1,
-                              location.lat!,
-                              location.long!,
-                              idCategorySelected,
-                              time,
-                              price,
-                              distance);
-                          print(list);
-                          if (!mounted) return;
-                          Navigator.pushNamed(context, PathScreen.id);
-                          setState(() {
-                            showSpinner = false;
-                          });
+                          if (idCategorySelected.isEmpty) {
+                            Alert(
+                                context: context,
+                                title: 'Please select one category at least!',
+                                buttons: [
+                                  DialogButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      // ignore: use_build_context_synchronously
+                                      AppLocalizations.of(context)!.close,
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                  ),
+                                ]).show();
+                          } else {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            LocationGetter location = LocationGetter();
+                            await location.getCurrentLocation();
+                            List list = await MakeTripAPI().makeVoyage(
+                                1,
+                                location.lat!,
+                                location.long!,
+                                idCategorySelected,
+                                time,
+                                price,
+                                distance);
+                            if (!mounted) return;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PathScreen(
+                                  listOfPlaces: list,
+                                ),
+                              ),
+                            );
+                            setState(() {
+                              showSpinner = false;
+                            });
+                          }
                         },
                         minWidth: 250.0,
                         height: 42.0,
