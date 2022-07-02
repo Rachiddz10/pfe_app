@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:pfe_app/apis/categories_api.dart';
 import 'package:pfe_app/apis/like_place_api.dart';
 import 'package:pfe_app/components/nearby_place_card.dart';
 import 'package:pfe_app/components/place_id.dart';
@@ -12,23 +13,22 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pfe_app/screens/welcome_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../apis/weather_api.dart';
+import '../components/category_place.dart';
 import '../components/weather.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen(
-      {Key? key,
-      this.idNumber,
-      this.list,
-      this.listOfPlaces,
-      this.nearbyPlacesCards,
-      })
-      : super(key: key);
+  const MainScreen({
+    Key? key,
+    this.idNumber,
+    this.list,
+    this.listOfPlaces,
+    this.nearbyPlacesCards,
+  }) : super(key: key);
   static const String id = 'main_screen';
   final int? idNumber;
   final List<PlaceCard>? list;
   final List<PlaceStructure>? listOfPlaces;
   final List<NearbyPlaceCard>? nearbyPlacesCards;
-
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -193,11 +193,17 @@ class _MainScreenState extends State<MainScreen> {
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(10.0),
                             child: MaterialButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                List<CategoryPlace> listOfCategories =
+                                    await CategoriesPlacesAPI()
+                                        .fetchCategories();
                                 Navigator.push(
                                   (context),
                                   MaterialPageRoute(
-                                    builder: (context) => const MakeTrip(),
+                                    builder: (context) => MakeTrip(
+                                      idNumber: widget.idNumber,
+                                      listOfCategories: listOfCategories,
+                                    ),
                                   ),
                                 );
                               },
@@ -302,31 +308,8 @@ class _MainScreenState extends State<MainScreen> {
                                                   title: Text(e.place.name!),
                                                   subtitle: Text(
                                                       '${e.place.price} ${AppLocalizations.of(context)!.pricing}'),
-                                                  trailing: Text('${(e.nearbyPlaceInfo.distance/1000).toStringAsFixed(2)} Km'),
-                                                  /*GestureDetector(
-                                                    onTap: () async {
-                                                      setState(() {
-                                                        showSpinner = true;
-                                                      });
-                                                      await LikedPlaceAPi()
-                                                          .modifyLikedPlaceState(
-                                                              e.place);
-                                                      setState(() {
-                                                        if (e.place.liked == true) {}
-                                                        showSpinner = false;
-                                                      });
-                                                    },
-                                                    child: Icon(
-                                                      (e.place.liked == true)
-                                                          ? Icons.favorite
-                                                          : Icons
-                                                              .favorite_border,
-                                                      color: (e.place.liked == true)
-                                                          ? Colors.red
-                                                          : null,
-                                                      size: 35.0,
-                                                    ),
-                                                  ),*/
+                                                  trailing: Text(
+                                                      '${(e.nearbyPlaceInfo.distance / 1000).toStringAsFixed(2)} Km'),
                                                 ),
                                                 SizedBox(
                                                   height: 200.0,
@@ -341,7 +324,8 @@ class _MainScreenState extends State<MainScreen> {
                                                       16.0),
                                                   alignment:
                                                       Alignment.centerLeft,
-                                                  child: Text('${e.place.summary}'),
+                                                  child: Text(
+                                                      '${e.place.summary}'),
                                                 ),
                                               ],
                                             ),
@@ -400,7 +384,8 @@ class _MainScreenState extends State<MainScreen> {
                                                   title: Text(e.place.name!),
                                                   subtitle: Text(
                                                       '${e.place.price} ${AppLocalizations.of(context)!.pricing}'),
-                                                  trailing: Text('${(e.nearbyPlaceInfo.distance/1000).toStringAsFixed(2)} Km'),
+                                                  trailing: Text(
+                                                      '${(e.nearbyPlaceInfo.distance / 1000).toStringAsFixed(2)} Km'),
                                                 ),
                                                 SizedBox(
                                                   height: 200.0,
@@ -415,7 +400,8 @@ class _MainScreenState extends State<MainScreen> {
                                                       16.0),
                                                   alignment:
                                                       Alignment.centerLeft,
-                                                  child: Text('${e.place.summary}'),
+                                                  child: Text(
+                                                      '${e.place.summary}'),
                                                 ),
                                               ],
                                             ),
@@ -586,11 +572,17 @@ class _MainScreenState extends State<MainScreen> {
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(10.0),
                             child: MaterialButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                List<CategoryPlace> listOfCategories =
+                                    await CategoriesPlacesAPI()
+                                        .fetchCategories();
                                 Navigator.push(
                                   (context),
                                   MaterialPageRoute(
-                                    builder: (context) => const MakeTrip(),
+                                    builder: (context) => MakeTrip(
+                                      idNumber: widget.idNumber,
+                                      listOfCategories: listOfCategories,
+                                    ),
                                   ),
                                 );
                               },
@@ -695,7 +687,8 @@ class _MainScreenState extends State<MainScreen> {
                                                   title: Text(e.place.name!),
                                                   subtitle: Text(
                                                       '${e.place.price} ${AppLocalizations.of(context)!.pricing}'),
-                                                  trailing: Text('${(e.nearbyPlaceInfo.distance/1000).toStringAsFixed(2)} Km'),
+                                                  trailing: Text(
+                                                      '${(e.nearbyPlaceInfo.distance / 1000).toStringAsFixed(2)} Km'),
                                                 ),
                                                 SizedBox(
                                                   height: 200.0,
@@ -710,7 +703,8 @@ class _MainScreenState extends State<MainScreen> {
                                                       16.0),
                                                   alignment:
                                                       Alignment.centerLeft,
-                                                  child: Text('${e.place.summary}'),
+                                                  child: Text(
+                                                      '${e.place.summary}'),
                                                 ),
                                               ],
                                             ),
@@ -769,7 +763,8 @@ class _MainScreenState extends State<MainScreen> {
                                                   title: Text(e.place.name!),
                                                   subtitle: Text(
                                                       '${e.place.price} ${AppLocalizations.of(context)!.pricing}'),
-                                                  trailing: Text('${(e.nearbyPlaceInfo.distance/1000).toStringAsFixed(2)} Km'),
+                                                  trailing: Text(
+                                                      '${(e.nearbyPlaceInfo.distance / 1000).toStringAsFixed(2)} Km'),
                                                 ),
                                                 SizedBox(
                                                   height: 200.0,
@@ -784,7 +779,8 @@ class _MainScreenState extends State<MainScreen> {
                                                       16.0),
                                                   alignment:
                                                       Alignment.centerLeft,
-                                                  child: Text('${e.place.summary}'),
+                                                  child: Text(
+                                                      '${e.place.summary}'),
                                                 ),
                                               ],
                                             ),
