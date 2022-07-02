@@ -25,31 +25,14 @@ class _MakeTripState extends State<MakeTrip> {
   String? cityName;
   List<int> idCategorySelected = [];
   bool showSpinner = false;
+  bool priceChecked = true;
+  bool timeChecked = true;
+  bool distanceChecked = true;
+  String priceText = '';
+  String timeText = '';
+  String distanceText = '';
 
-  bool isChecked = false;
-
-  Checkbox getCheckBox() {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
-      }
-      return const Color(0xFF757575);
-    }
-
-    return Checkbox(
-      checkColor: Colors.white,
-      fillColor: MaterialStateProperty.resolveWith(getColor),
-      value: isChecked,
-      onChanged: (bool? value) {
-        setState(() {
-          isChecked = value!;
-        });
-      },
-    );
-  }
+  final _formKeyKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -192,106 +175,118 @@ class _MakeTripState extends State<MakeTrip> {
                     children: getCategories(),
                   ),
                   const SizedBox(
-                    height: 10.0,
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  /*Card(
-                    color: Colors.grey[50],
-                    elevation: 0,
-                    child: Column(
-                      children: [
-                        /*ListTile(
-                          title: const Text(
-                            'Free to visit: ',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                            ),
-                          ),
-                          trailing: getCheckBox(),
-                        ),*/
-                        ListTile(
-                          title: const Text(
-                            'Price:',
-                            style: TextStyle(fontSize: 20.0),
-                          ),
-                          trailing: TextField(
-                            onChanged: (value) {},
-                            decoration: const InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),*/
-
-                  const SizedBox(
-                    height: 20.0,
+                    height: 50.0,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 15.0, right: 15.0, top: 5.0, bottom: 15.0),
-                    child: CupertinoFormSection(
-                      header: const Text('Circuit Criteria'),
-                      children: [
-                        CupertinoFormRow(
-                          prefix: const Text('Price'),
-                          helper: const Text(
-                            '-1 for unlimited budget',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey,
+                    child: Form(
+                      key: _formKeyKey,
+                      child: CupertinoFormSection(
+                        header: const Text('Circuit Criteria'),
+                        children: [
+                          CheckboxListTile(
+                            title: const Text('Unlimited Price'),
+                            value: priceChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                priceChecked = value!;
+                              });
+                            },
+                          ),
+                          Visibility(
+                            visible: !priceChecked,
+                            child: CupertinoFormRow(
+                              prefix: const Text('Price'),
+                              //error: const Text(''),
+                              child: CupertinoTextFormFieldRow(
+                                placeholder: '1000 DZD',
+                                keyboardType: TextInputType.number,
+                                validator: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a value';
+                                  }
+                                  if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                                    return 'Numbers are accepted only';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  priceText = value!;
+                                },
+                              ),
                             ),
                           ),
-                          //error: const Text(''),
-                          child: CupertinoTextFormFieldRow(
-                            placeholder: '1000 DZD',
-                            keyboardType: TextInputType.number,
+                          CheckboxListTile(
+                            title: const Text('Limited time'),
+                            value: timeChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                timeChecked = value!;
+                              });
+                            },
                           ),
-                        ),
-                        CupertinoFormRow(
-                          prefix: const Text('Time'),
-                          helper: const Text(
-                            '0 for unlimited time',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey,
+                          Visibility(
+                            visible: !timeChecked,
+                            child: CupertinoFormRow(
+                              prefix: const Text('Time'),
+                              child: CupertinoTextFormFieldRow(
+                                placeholder: '60 min',
+                                keyboardType: TextInputType.number,
+                                validator: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a value';
+                                  }
+                                  if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                                    return 'Numbers are accepted only';
+                                  }
+                                  if (value == '0') {
+                                    return 'Time must not be equal to 0';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  timeText = value!;
+                                },
+                              ),
                             ),
                           ),
-                          child: CupertinoTextFormFieldRow(
-                            placeholder: '60 min',
-                            keyboardType: TextInputType.number,
+                          CheckboxListTile(
+                            title: const Text('Limited distance'),
+                            value: distanceChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                distanceChecked = value!;
+                              });
+                            },
                           ),
-                        ),
-                        CupertinoFormRow(
-                          prefix: const Text('Distance'),
-                          helper: const Text(
-                            '-1 for unlimited budget',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey,
+                          Visibility(
+                            visible: !distanceChecked,
+                            child: CupertinoFormRow(
+                              prefix: const Text('Distance'),
+                              child: CupertinoTextFormFieldRow(
+                                keyboardType: TextInputType.number,
+                                placeholder: '5000 meters',
+                                validator: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a value';
+                                  }
+                                  if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                                    return 'Numbers are accepted only';
+                                  }
+                                  if (value == '0') {
+                                    return 'distance must not be equal to 0';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  distanceText = value!;
+                                },
+                              ),
                             ),
                           ),
-                          child: CupertinoTextFormFieldRow(
-                            keyboardType: TextInputType.number,
-                            placeholder: '5000 meters',
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
@@ -305,6 +300,25 @@ class _MakeTripState extends State<MakeTrip> {
                       borderRadius: BorderRadius.circular(10.0),
                       child: MaterialButton(
                         onPressed: () async {
+                          if (!_formKeyKey.currentState!.validate()) {
+                            return;
+                          }
+                          _formKeyKey.currentState!.save();
+                          int price = -2;
+                          int time = -1;
+                          int distance = -1;
+                          if (!priceChecked) {
+                            price = int.parse(priceText);
+                          }
+                          if (!timeChecked) {
+                            time = int.parse(timeText);
+                          }
+                          if (!distanceChecked) {
+                            distance = int.parse(distanceText);
+                          }
+                          print('time = $time');
+                          print('price = $price');
+                          print('distance = $distance');
                           setState(() {
                             showSpinner = true;
                           });
@@ -314,10 +328,10 @@ class _MakeTripState extends State<MakeTrip> {
                               1,
                               location.lat!,
                               location.long!,
-                              ["1", "2", "4", "5", "6"],
-                              0,
-                              -1,
-                              0);
+                              idCategorySelected,
+                              time,
+                              price,
+                              distance);
                           print(list);
                           if (!mounted) return;
                           Navigator.pushNamed(context, PathScreen.id);

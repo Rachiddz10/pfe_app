@@ -58,7 +58,6 @@
   }
   */
 
-
 /*
 //------------- Card Builder Vertical
   List<Widget> buildVerticalCard() {
@@ -139,7 +138,6 @@ class PlacesThumbs {
   }
 }*/
 
-
 /*
 //------ PLace Thumb
 class PlaceThumb {
@@ -162,7 +160,6 @@ class PlaceThumb {
     return place;
   }
 }*/
-
 
 //----------  image urls  -------------------
 /*
@@ -929,3 +926,68 @@ GestureDetector(
                             ),
                           ),
  */
+/* ancient checkbox
+Checkbox getCheckBox() {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.pressed,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return Colors.blue;
+      }
+      return const Color(0xFF757575);
+    }
+
+    return Checkbox(
+      checkColor: Colors.white,
+      fillColor: MaterialStateProperty.resolveWith(getColor),
+      value: isChecked,
+      onChanged: (bool? value) {
+        setState(() {
+          isChecked = value!;
+        });
+      },
+    );
+  }
+
+Card(
+                    color: Colors.grey[50],
+                    elevation: 0,
+                    child: Column(
+                      children: [
+                        /*ListTile(
+                          title: const Text(
+                            'Free to visit: ',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                            ),
+                          ),
+                          trailing: getCheckBox(),
+                        ),*/
+                        ListTile(
+                          title: const Text(
+                            'Price:',
+                            style: TextStyle(fontSize: 20.0),
+                          ),
+                          trailing: TextField(
+                            onChanged: (value) {},
+                            decoration: const InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),*/
