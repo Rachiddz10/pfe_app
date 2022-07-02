@@ -60,102 +60,108 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
           ),
           constraints: const BoxConstraints.expand(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Hero(
-                      tag: 'logo',
-                      child: SizedBox(
-                        height: animation!.value * 100,
-                        child: Image.asset('images/logo.png'),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  const SizedBox(
+                    height: 120.0,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Hero(
+                        tag: 'logo',
+                        child: SizedBox(
+                          height: animation!.value * 100,
+                          child: Image.asset('images/logo.png'),
+                        ),
                       ),
-                    ),
-                    Flexible(
-                      child: AnimatedTextKit(
-                        animatedTexts: [
-                          TypewriterAnimatedText(
-                            'Travel App',
-                            textStyle: const TextStyle(
-                              fontSize: 45.0,
-                              fontWeight: FontWeight.w900,
+                      Flexible(
+                        child: AnimatedTextKit(
+                          animatedTexts: [
+                            TypewriterAnimatedText(
+                              'Travel App',
+                              textStyle: const TextStyle(
+                                fontSize: 45.0,
+                                fontWeight: FontWeight.w900,
+                              ),
+                              speed: const Duration(milliseconds: 250),
                             ),
-                            speed: const Duration(milliseconds: 250),
-                          ),
-                        ],
-                        //${controller!.value.toInt()} %
+                          ],
+                          //${controller!.value.toInt()} %
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 48.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Material(
-                    elevation: 5.0,
-                    color: Colors.lightBlueAccent[100],
-                    borderRadius: BorderRadius.circular(30.0),
-                    child: MaterialButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, LoginScreen.id);
-                      },
-                      minWidth: 200.0,
-                      height: 42.0,
-                      child: const Text(
-                        'Log In',
-                      ),
-                    ),
+                    ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Material(
-                    color: Colors.lightBlueAccent,
-                    borderRadius: BorderRadius.circular(30.0),
-                    elevation: 5.0,
-                    child: MaterialButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, RegisterScreen.id);
-                      },
-                      minWidth: 200.0,
-                      height: 42.0,
-                      child: const Text(
-                        'Register',
-                      ),
-                    ),
+                  const SizedBox(
+                    height: 48.0,
                   ),
-                ),
-                const SizedBox(
-                  height: 60.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Material(
-                    color: Colors.pink[400],
-                    borderRadius: BorderRadius.circular(30.0),
-                    elevation: 5.0,
-                    child: MaterialButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, LoadingScreen.id);
-                      },
-                      minWidth: 200.0,
-                      height: 42.0,
-                      child: const Text(
-                        'Skip (continue without login)',
-                        style: TextStyle(
-                          color: Colors.white,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Material(
+                      elevation: 5.0,
+                      color: Colors.lightBlueAccent[100],
+                      borderRadius: BorderRadius.circular(30.0),
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, LoginScreen.id);
+                        },
+                        minWidth: 200.0,
+                        height: 42.0,
+                        child: const Text(
+                          'Log In',
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Material(
+                      color: Colors.lightBlueAccent,
+                      borderRadius: BorderRadius.circular(30.0),
+                      elevation: 5.0,
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, RegisterScreen.id);
+                        },
+                        minWidth: 200.0,
+                        height: 42.0,
+                        child: const Text(
+                          'Register',
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 60.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Material(
+                      color: Colors.pink[400],
+                      borderRadius: BorderRadius.circular(30.0),
+                      elevation: 5.0,
+                      child: MaterialButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, LoadingScreen.id);
+                        },
+                        minWidth: 200.0,
+                        height: 42.0,
+                        child: const Text(
+                          'Skip (continue without login)',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
