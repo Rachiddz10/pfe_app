@@ -883,22 +883,22 @@ class MainScreenEmptyPlaces extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-            child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              AppLocalizations.of(context)!.noPlacesFound,
-              style: const TextStyle(
-                fontSize: 35.0,
-                color: Colors.black,
+        body: SafeArea(
+          child: Center(
+              child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                AppLocalizations.of(context)!.noPlacesFound,
+                style: const TextStyle(
+                  fontSize: 35.0,
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
-        )),
-      ),
-    );
+          )),
+        ),
+        s);
   }
 }
