@@ -7,6 +7,7 @@ import 'package:pfe_app/components/place_id.dart';
 import 'package:pfe_app/components/place_structure.dart';
 import 'package:pfe_app/components/user.dart';
 import 'package:pfe_app/constants.dart';
+import 'package:pfe_app/screens/explore.dart';
 import 'package:pfe_app/screens/make_trip.dart';
 import 'package:pfe_app/screens/place_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -228,8 +229,19 @@ class _MainScreenState extends State<MainScreen> {
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(10.0),
                             child: MaterialButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, WelcomeScreen.id);
+                              onPressed: () async {
+                                List<CategoryPlace> listOfCategories =
+                                await CategoriesPlacesAPI()
+                                    .fetchCategories();
+                                Navigator.push(
+                                  (context),
+                                  MaterialPageRoute(
+                                    builder: (context) => Explore(
+                                      idNumber: widget.idNumber,
+                                      listOfCategories: listOfCategories,
+                                    ),
+                                  ),
+                                );
                               },
                               minWidth: 150.0,
                               height: 50.0,
@@ -607,8 +619,19 @@ class _MainScreenState extends State<MainScreen> {
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(10.0),
                             child: MaterialButton(
-                              onPressed: () {
-                                Navigator.pushNamed(context, WelcomeScreen.id);
+                              onPressed: () async {
+                                List<CategoryPlace> listOfCategories =
+                                await CategoriesPlacesAPI()
+                                    .fetchCategories();
+                                Navigator.push(
+                                  (context),
+                                  MaterialPageRoute(
+                                    builder: (context) => Explore(
+                                      idNumber: widget.idNumber,
+                                      listOfCategories: listOfCategories,
+                                    ),
+                                  ),
+                                );
                               },
                               minWidth: 150.0,
                               height: 50.0,
