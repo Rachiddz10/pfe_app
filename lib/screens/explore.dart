@@ -63,16 +63,17 @@ class _ExploreState extends State<Explore> {
       ),);
       listUI.add(
           SizedBox(
-            width: MediaQuery.of(context).size.width - 50.0,
+            width: MediaQuery.of(context).size.width - 30.0,
             height: 460.0,
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               children: element.listOfPlaces!
                   .map(
-                    (e) =>
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 30,
+                    (e)
+                    {
+                      return SizedBox(
+                      width: MediaQuery.of(context).size.width - 50,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 16.0),
                         child: GestureDetector(
@@ -126,7 +127,7 @@ class _ExploreState extends State<Explore> {
                           ),
                         ),
                       ),
-                    ),
+                    );},
               )
                   .toList(),
             ),

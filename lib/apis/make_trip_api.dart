@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:pfe_app/constants.dart';
 
 class MakeTripAPI {
-  Future<List> makeVoyage(int id, double lat, double long, List list, int time,
+  Future makeVoyage(int id, double lat, double long, List list, int time,
       int price, int distance) async {
     http.Response response = await http.post(
       Uri.parse('$kURl/generate-path'),
@@ -24,13 +24,13 @@ class MakeTripAPI {
     );
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
-      List<Map<String, dynamic>> list = [];
+      /*List<Map<String, dynamic>> list = [];
       Map<String, dynamic> newMap = Map<String, dynamic>.from(json);
       newMap.entries.map((e) {
         Map<String, dynamic> littleMap = {e.key: e.value};
         list.add(littleMap);
-      }).toList();
-      return list;
+      }).toList();*/
+      return json;
     } else {
       throw Exception('error fetching path');
     }

@@ -993,3 +993,98 @@ Card(
                   ),
                  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
  */
+/*
+Material(
+                              elevation: 3.0,
+                              borderRadius: BorderRadius.circular(5.0),
+                              child: MaterialButton(
+                                minWidth: 15,
+                                onPressed: () {
+                                  Alert(
+                                    context: context,
+                                    title: 'Are you sure you want to log out?',
+                                    buttons: [
+                                      DialogButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          'No',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                      ),
+                                      DialogButton(
+                                        onPressed: () {
+                                          User.logoutUser();
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const WelcomeScreen()));
+                                        },
+                                        child: const Text(
+                                          'Yes',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                      ),
+                                    ],
+                                  ).show();
+                                },
+                                child: const Icon(Icons.logout_outlined),
+                              ),
+                            ),
+ */
+/*
+DropdownButton(
+                              isExpanded: false,
+                              icon: const Icon(
+                                Icons.menu,
+                                color: Colors.grey,
+                              ),
+                              items: items.map(buildMenuItem).toList(),
+                              onChanged: (String? value) {
+                                setState(() {
+                                  this.value = value;
+                                  if(value == 'Log out') {
+                                    Alert(
+                                      context: context,
+                                      title: 'Are you sure you want to log out?',
+                                      buttons: [
+                                        DialogButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text(
+                                            'No',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
+                                          ),
+                                        ),
+                                        DialogButton(
+                                          onPressed: () {
+                                            User.logoutUser();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                    const WelcomeScreen()));
+                                          },
+                                          child: const Text(
+                                            'Yes',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
+                                          ),
+                                        ),
+                                      ],
+                                    ).show();
+                                  }
+                                });
+                              },
+                            )),
+ */

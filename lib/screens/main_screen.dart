@@ -36,6 +36,18 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final items = ['Liked Places', 'Saved Paths', 'Log out'];
+  String? value;
+
+  DropdownMenuItem<String> buildMenuItem(String item) {
+    return DropdownMenuItem(
+      value: item,
+      child: Text(
+        item,
+      ),
+    );
+  }
+
   //-----------prepare Weather for nex screen ------
   Weather? weather;
 
@@ -57,6 +69,7 @@ class _MainScreenState extends State<MainScreen> {
     list = widget.list;
     listOfPlaces = widget.listOfPlaces;
     nearbyPlacesCards = widget.nearbyPlacesCards;
+    value = items[0];
   }
 
   //-----------------------------------
@@ -167,7 +180,7 @@ class _MainScreenState extends State<MainScreen> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const WelcomeScreen()));
+                                                  const WelcomeScreen()));
                                         },
                                         child: const Text(
                                           'Yes',
@@ -182,7 +195,7 @@ class _MainScreenState extends State<MainScreen> {
                                 child: const Icon(Icons.logout_outlined),
                               ),
                             ),
-                          ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -231,8 +244,8 @@ class _MainScreenState extends State<MainScreen> {
                             child: MaterialButton(
                               onPressed: () async {
                                 List<CategoryPlace> listOfCategories =
-                                await CategoriesPlacesAPI()
-                                    .fetchCategories();
+                                    await CategoriesPlacesAPI()
+                                        .fetchCategories();
                                 Navigator.push(
                                   (context),
                                   MaterialPageRoute(
@@ -621,8 +634,8 @@ class _MainScreenState extends State<MainScreen> {
                             child: MaterialButton(
                               onPressed: () async {
                                 List<CategoryPlace> listOfCategories =
-                                await CategoriesPlacesAPI()
-                                    .fetchCategories();
+                                    await CategoriesPlacesAPI()
+                                        .fetchCategories();
                                 Navigator.push(
                                   (context),
                                   MaterialPageRoute(

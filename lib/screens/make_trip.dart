@@ -9,6 +9,8 @@ import 'package:pfe_app/screens/path_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../components/circuit_place.dart';
+
 class MakeTrip extends StatefulWidget {
   const MakeTrip({this.name, this.idNumber, this.listOfCategories, Key? key})
       : super(key: key);
@@ -220,7 +222,7 @@ class _MakeTripState extends State<MakeTrip> {
                             ),
                           ),
                           CheckboxListTile(
-                            title: const Text('Limited time'),
+                            title: const Text('Unlimited time'),
                             value: timeChecked,
                             onChanged: (bool? value) {
                               setState(() {
@@ -254,7 +256,7 @@ class _MakeTripState extends State<MakeTrip> {
                             ),
                           ),
                           CheckboxListTile(
-                            title: const Text('Limited distance'),
+                            title: const Text('Unlimited distance'),
                             value: distanceChecked,
                             onChanged: (bool? value) {
                               setState(() {
@@ -341,7 +343,7 @@ class _MakeTripState extends State<MakeTrip> {
                             });
                             LocationGetter location = LocationGetter();
                             await location.getCurrentLocation();
-                            List list = await MakeTripAPI().makeVoyage(
+                            var json = await MakeTripAPI().makeVoyage(
                                 1,
                                 location.lat!,
                                 location.long!,
@@ -349,6 +351,10 @@ class _MakeTripState extends State<MakeTrip> {
                                 time,
                                 price,
                                 distance);
+                            List<CircuitPlaces> list = [];
+                            for(int i =0; i < json.length -2; i++) {
+                              list.add(CircuitPlaces(json['$i']['id'], json['$i']['name'], json['$i']['summary'], json['$i']['distance']));
+                            }
                             if (!mounted) return;
                             Navigator.push(
                               context,

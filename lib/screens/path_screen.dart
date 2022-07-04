@@ -1,21 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:pfe_app/apis/places_info_api.dart';
+import 'package:pfe_app/components/place_structure.dart';
+import 'package:pfe_app/screens/place_view.dart';
+
+import '../apis/weather_api.dart';
+import '../components/circuit_place.dart';
+import '../components/weather.dart';
+import '../constants.dart';
 
 class PathScreen extends StatefulWidget {
   const PathScreen({this.listOfPlaces, Key? key}) : super(key: key);
   static const String id = 'path_screen';
-  final List? listOfPlaces;
+  final List<CircuitPlaces>? listOfPlaces;
 
   @override
   State<PathScreen> createState() => _PathScreenState();
 }
 
 class _PathScreenState extends State<PathScreen> {
-  List places = [];
+
+  Weather? weather;
+
+  Future getDataMeteo(PlaceStructure placeStructure) async {
+    weather = await WeatherAPI().getDataMeteo(placeStructure);
+  }
+
+  List<CircuitPlaces> places = [];
+  bool showSpinner = false;
 
   @override
   initState() {
     super.initState();
     places = widget.listOfPlaces!;
+  }
+  List<PlaceStructure> listPlaces = [];
+  Future getPlaces () async {
+    listPlaces = [];
+    for (var e in places) {
+      listPlaces.add(await PlaceInfo().fetchPlace(1, e.id!));
+    }
   }
 
   @override
@@ -52,10 +75,9 @@ class _PathScreenState extends State<PathScreen> {
                     ),
                   )
                 : FutureBuilder(
-                    future: Future.delayed(const Duration(seconds: 5)),
+                    future: getPlaces(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        List<CircuitPlaces> list = [];
                         return Column(
                           children: [
                             const SizedBox(
@@ -76,7 +98,62 @@ class _PathScreenState extends State<PathScreen> {
                                 ),
                               ],
                             ),
-                            Text('$places'),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Column(
+                                children: listPlaces
+                                    .map(
+                                      (e) => GestureDetector(
+                                    onTap: () async {
+                                      setState(() {
+                                        showSpinner = true;
+                                      });
+                                      await getDataMeteo(e);
+                                      if (!mounted) return;
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                            return PlaceView(
+                                              placeInfo: e,
+                                              weather: weather,
+                                            );
+                                          }));
+                                      setState(() {
+                                        listPlaces = listPlaces;
+                                        showSpinner = false;
+                                      });
+                                    },
+                                    child: Card(
+                                      child: Card(
+                                        elevation: 4.0,
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              title: Text(e.name!),
+                                              subtitle:
+                                              Text('${e.price} DZD for entry'),
+                                            ),
+                                            SizedBox(
+                                              height: 200.0,
+                                              child: Ink.image(
+                                                image: NetworkImage(
+                                                    '$kURlForImage/${e.thumb}'),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: const EdgeInsets.all(16.0),
+                                              alignment: Alignment.centerLeft,
+                                              child: Text('${e.summary}'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                    .toList(),
+                              ),
+                            ),
                           ],
                         );
                       } else {
@@ -119,11 +196,4 @@ class _PathScreenState extends State<PathScreen> {
   }
 }
 
-class CircuitPlaces {
-  int? id;
-  String? name;
-  String? summary;
-  int? distance;
 
-  CircuitPlaces(this.id, this.name, this.summary, this.distance);
-}

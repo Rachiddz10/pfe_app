@@ -24,4 +24,18 @@ class PlaceInfo {
       return listPlacesInfo;
     }
   }*/
+  Future<PlaceStructure> fetchPlace(int id, int idNumber) async {
+    //try {
+    PlaceStructure listPlacesInfo;
+    final http.Response response = await http.get(
+        Uri.parse('$kURl/$id/$idNumber/info'));
+    var json = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      listPlacesInfo = await PlaceStructure.fromJsonTranslated(
+          idNumber, json);
+      return listPlacesInfo;
+    } else {
+      throw Exception(' Failed to load Places');
+    }
+  }
 }
