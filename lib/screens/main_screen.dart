@@ -127,7 +127,7 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                           )
                         : ListTile(
-                            title: Padding(
+                            /*title: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 10.0, horizontal: 20.0),
                               child: TextField(
@@ -151,48 +151,51 @@ class _MainScreenState extends State<MainScreen> {
                                   ),
                                 ),
                               ),
-                            ),
-                            trailing: Material(
-                              elevation: 3.0,
-                              borderRadius: BorderRadius.circular(5.0),
-                              child: MaterialButton(
-                                minWidth: 15,
-                                onPressed: () {
-                                  Alert(
-                                    context: context,
-                                    title: 'Are you sure you want to log out?',
-                                    buttons: [
-                                      DialogButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text(
-                                          'No',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20),
+                            ),*/
+                            trailing: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Material(
+                                elevation: 3.0,
+                                borderRadius: BorderRadius.circular(5.0),
+                                child: MaterialButton(
+                                  minWidth: 15,
+                                  onPressed: () {
+                                    Alert(
+                                      context: context,
+                                      title: 'Are you sure you want to log out?',
+                                      buttons: [
+                                        DialogButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text(
+                                            'No',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
+                                          ),
                                         ),
-                                      ),
-                                      DialogButton(
-                                        onPressed: () {
-                                          User.logoutUser();
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                  const WelcomeScreen()));
-                                        },
-                                        child: const Text(
-                                          'Yes',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20),
+                                        DialogButton(
+                                          onPressed: () {
+                                            User.logoutUser();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                    const WelcomeScreen()));
+                                          },
+                                          child: const Text(
+                                            'Yes',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20),
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ).show();
-                                },
-                                child: const Icon(Icons.logout_outlined),
+                                      ],
+                                    ).show();
+                                  },
+                                  child: const Icon(Icons.logout_outlined),
+                                ),
                               ),
                             ),
                     ),
@@ -562,10 +565,10 @@ class _MainScreenState extends State<MainScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 30.0),
-                      child: TextField(
+                      child: /*TextField(
                         onChanged: (value) {},
                         decoration: InputDecoration(
                           filled: true,
@@ -584,6 +587,9 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                           ),
                         ),
+                      ),*/
+                      SizedBox(
+                        height: 20.0,
                       ),
                     ),
                     Row(

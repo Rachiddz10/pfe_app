@@ -111,12 +111,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 });
                               },
                               child: birthday == null
-                                  ? const Text(
-                                      'Date of Birth',
-                                      style: TextStyle(color: Colors.white),
+                                  ? Text(
+                                      AppLocalizations.of(context)!.dateBirth,
+                                      style: const TextStyle(color: Colors.white),
                                     )
                                   : Text(
-                                      'Date of Birth:    ${DateFormat("dd-MM-yyyy").format(birthday!)}',
+                                      '${AppLocalizations.of(context)!.dateBirth}:    ${DateFormat("dd-MM-yyyy").format(birthday!)}',
                                       style:
                                           const TextStyle(color: Colors.white),
                                     ),
@@ -155,7 +155,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 if (message == 'Email already used') {
                                   Alert(
                                       context: context,
-                                      title: 'Registration failed',
+                                      // ignore: use_build_context_synchronously
+                                      title: AppLocalizations.of(context)!.registrationFailed,
                                       content: Column(
                                         children: [
                                           const SizedBox(
@@ -187,9 +188,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               },
                               minWidth: 200.0,
                               height: 42.0,
-                              child: const Text(
-                                'Register',
-                                style: TextStyle(color: Colors.white),
+                              child:  Text(
+                                AppLocalizations.of(context)!.register,
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
@@ -211,7 +212,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: TextFormField(
         validator: (String? value) {
           if (value!.isEmpty) {
-            return 'First name is required';
+            return AppLocalizations.of(context)!.firstNameRequired;
           }
           return null;
         },
@@ -224,12 +225,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         decoration: InputDecoration(
           label: Text(
-            'First name',
+            AppLocalizations.of(context)!.firstName,
             style: TextStyle(fontSize: 20.0, color: Colors.pink[300]),
           ),
           fillColor: Colors.white,
           filled: true,
-          hintText: 'Enter your first name',
+          hintText: AppLocalizations.of(context)!.enterFirstName,
           hintStyle: const TextStyle(color: Colors.black38),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -254,7 +255,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: TextFormField(
         validator: (String? value) {
           if (value!.isEmpty) {
-            return 'Last name is required';
+            return AppLocalizations.of(context)!.lastNameRequired;
           }
           return null;
         },
@@ -267,12 +268,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         decoration: InputDecoration(
           label: Text(
-            'Last name',
+            AppLocalizations.of(context)!.lastName,
             style: TextStyle(fontSize: 20.0, color: Colors.pink[300]),
           ),
           fillColor: Colors.white,
           filled: true,
-          hintText: 'Enter your Last name',
+          hintText: AppLocalizations.of(context)!.enterLastName,
           hintStyle: const TextStyle(color: Colors.black38),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -298,12 +299,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         keyboardType: TextInputType.emailAddress,
         validator: (String? value) {
           if (value!.isEmpty) {
-            return 'Email name is required';
+            return AppLocalizations.of(context)!.emailRequired;
           }
           if (!RegExp(
                   r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
               .hasMatch(value)) {
-            return 'Invalid Email Address';
+            return AppLocalizations.of(context)!.invalidEmailAddress;
           }
           return null;
         },
@@ -316,7 +317,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         decoration: InputDecoration(
           label: Text(
-            'Email',
+            AppLocalizations.of(context)!.email,
             style: TextStyle(fontSize: 20.0, color: Colors.pink[300]),
           ),
           fillColor: Colors.white,
@@ -348,10 +349,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         obscureText: true,
         validator: (String? value) {
           if (value!.isEmpty) {
-            return 'Password is required';
+            return AppLocalizations.of(context)!.passwordRequired;
           }
           if (value.length < 8) {
-            return 'Password must be over 7 caracters';
+            return AppLocalizations.of(context)!.passwordOverCara;
           }
           return null;
         },
@@ -364,12 +365,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         decoration: InputDecoration(
           label: Text(
-            'Password',
+            AppLocalizations.of(context)!.password,
             style: TextStyle(fontSize: 20.0, color: Colors.pink[300]),
           ),
           fillColor: Colors.white,
           filled: true,
-          hintText: 'Enter your Password',
+          hintText: AppLocalizations.of(context)!.enterPassword,
           hintStyle: const TextStyle(color: Colors.black38),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -396,10 +397,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         keyboardType: TextInputType.visiblePassword,
         validator: (String? value) {
           if (value!.isEmpty) {
-            return 'Confirmation is required';
+            return AppLocalizations.of(context)!.confirmationRequired;
           }
           if (value != password) {
-            return 'confirmation does not match';
+            return AppLocalizations.of(context)!.confirmationNotMatch;
           }
           return null;
         },
@@ -412,12 +413,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         decoration: InputDecoration(
           label: Text(
-            'Confirm',
+            AppLocalizations.of(context)!.confirm,
             style: TextStyle(fontSize: 20.0, color: Colors.pink[300]),
           ),
           fillColor: Colors.white,
           filled: true,
-          hintText: 'Retype password',
+          hintText: AppLocalizations.of(context)!.retypePassword,
           hintStyle: const TextStyle(color: Colors.black38),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -450,14 +451,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            'Gender:',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          Text(
+            '${AppLocalizations.of(context)!.gender}:',
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(
             width: 10.0,
           ),
-          const Text('Male'),
+           Text(AppLocalizations.of(context)!.male),
           Radio<int>(
             value: 1,
             groupValue: genderInt,
@@ -470,7 +471,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           const SizedBox(
             width: 20.0,
           ),
-          const Text('Female'),
+          Text(AppLocalizations.of(context)!.female),
           Radio<int>(
             value: 2,
             groupValue: genderInt,

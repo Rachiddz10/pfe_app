@@ -110,6 +110,128 @@
     "gallerySounds": "Sounds",
     "@gallerySounds": {
         "description": "gallerySounds"
-    }
+    },
 
+    "discoverAlgeria": "Discover Alger",
+    "@discoverAlgeria": {
+        "description": "discoverAlgeria"
+    },
+    "login": "Log In",
+    "@login": {
+        "description": "discoverAlgeria"
+    },
+    "register": "Register",
+    "@register": {
+        "description": "discoverAlgeria"
+    },
+    "skipLogin": "Skip (continue without login)",
+    "@skipLogin": {
+        "description": "discoverAlgeria"
+    },
+    "splashscreenWelcome": "Skip (continue without login)",
+    "@splashscreenWelcome": {
+        "description": "discoverAlgeria"
+    },
+
+
+    "dateBirth": "Date of birth",
+    "@dateBirth": {
+        "description": "discoverAlgeria"
+    },
+    "male": "Male",
+    "@male": {
+        "description": "discoverAlgeria"
+    },
+    "female": "Female",
+    "@female": {
+        "description": "discoverAlgeria"
+    },
+    "emailAlreadyUsed": "Email already used",
+    "@emailAlreadyUsed": {
+        "description": "discoverAlgeria"
+    },
+    "registrationFailed": "Registration failed",
+    "@registrationFailed": {
+        "description": "discoverAlgeria"
+    },
+    "firstNameRequired": "First name is required",
+    "@firstNameRequired": {
+        "description": "discoverAlgeria"
+    },
+    "firstName": "First name",
+    "@firstName": {
+        "description": "discoverAlgeria"
+    },
+    "enterFirstName": "Enter your first name",
+    "@enterFirstName": {
+        "description": "discoverAlgeria"
+    },
+    "lastNameRequired": "Last name is required",
+    "@lastNameRequired": {
+        "description": "discoverAlgeria"
+    },
+    "lastName": "Last name",
+    "@lastName": {
+        "description": "discoverAlgeria"
+    },
+    "enterLastName": "Enter your last name",
+    "@enterLastName": {
+        "description": "discoverAlgeria"
+    },
+    "emailRequired": "Email is required",
+    "@emailRequired": {
+        "description": "discoverAlgeria"
+    },
+    "invalidEmailAddress": "Invalid Email Address",
+    "@invalidEmailAddress": {
+        "description": "discoverAlgeria"
+    },
+    "email": "Email",
+    "@email": {
+        "description": "discoverAlgeria"
+    },
+    "passwordRequired": "Password is required",
+    "@passwordRequired": {
+        "description": "discoverAlgeria"
+    },
+    "passwordOverCara": "Password must be over 7 caracters",
+    "@passwordOverCara": {
+        "description": "discoverAlgeria"
+    },
+    "password": "Password",
+    "@password": {
+        "description": "discoverAlgeria"
+    },
+    "enterPassword": "Enter your Password",
+    "@enterPassword": {
+        "description": "discoverAlgeria"
+    },
+    "confirmationRequired": "Confirmation is required",
+    "@confirmationRequired": {
+        "description": "discoverAlgeria"
+    },
+    "confirmationNotMatch": "confirmation does not match",
+    "@confirmationNotMatch": {
+        "description": "discoverAlgeria"
+    },
+    "confirm": "Confirm",
+    "@confirm": {
+        "description": "discoverAlgeria"
+    },
+    "retypePassword": "Retype password",
+    "@retypePassword": {
+        "description": "discoverAlgeria"
+    },
+    "gender": "Gender",
+    "@gender": {
+        "description": "discoverAlgeria"
+    },
+    "loginFailed": "Login Failed",
+    "@loginFailed": {
+        "description": "discoverAlgeria"
+    },
+    "emailOrPasswordInvalid": "Email or Password invalid",
+    "@emailOrPasswordInvalid": {
+        "description": "discoverAlgeria"
+    }
 }

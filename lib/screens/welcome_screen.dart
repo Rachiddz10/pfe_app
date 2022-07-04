@@ -1,6 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pfe_app/screens/loading_screen.dart';
 import 'package:pfe_app/screens/login_screen.dart';
 import 'package:pfe_app/screens/register_screen.dart';
@@ -84,7 +84,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         child: AnimatedTextKit(
                           animatedTexts: [
                             TypewriterAnimatedText(
-                              'Travel App',
+                              AppLocalizations.of(context)!.discoverAlgeria,
                               textStyle: const TextStyle(
                                 fontSize: 45.0,
                                 fontWeight: FontWeight.w900,
@@ -112,8 +112,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         },
                         minWidth: 200.0,
                         height: 42.0,
-                        child: const Text(
-                          'Log In',
+                        child: Text(
+                          AppLocalizations.of(context)!.login,
                         ),
                       ),
                     ),
@@ -130,8 +130,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         },
                         minWidth: 200.0,
                         height: 42.0,
-                        child: const Text(
-                          'Register',
+                        child: Text(
+                          AppLocalizations.of(context)!.register,
                         ),
                       ),
                     ),
@@ -151,9 +151,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         },
                         minWidth: 200.0,
                         height: 42.0,
-                        child: const Text(
-                          'Skip (continue without login)',
-                          style: TextStyle(
+                        child: Text(
+                          AppLocalizations.of(context)!.skipLogin,
+                          style: const TextStyle(
                             color: Colors.white,
                           ),
                         ),

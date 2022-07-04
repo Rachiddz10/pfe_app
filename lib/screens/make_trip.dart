@@ -344,7 +344,7 @@ class _MakeTripState extends State<MakeTrip> {
                             LocationGetter location = LocationGetter();
                             await location.getCurrentLocation();
                             var json = await MakeTripAPI().makeVoyage(
-                                1,
+                                idCity!,
                                 location.lat!,
                                 location.long!,
                                 idCategorySelected,

@@ -62,12 +62,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             keyboardType: TextInputType.emailAddress,
                             validator: (String? value) {
                               if (value!.isEmpty) {
-                                return 'Email name is required';
+                                return AppLocalizations.of(context)!.emailRequired;
                               }
                               if (!RegExp(
                                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(value)) {
-                                return 'Invalid Email Address';
+                                return AppLocalizations.of(context)!.invalidEmailAddress;
                               }
                               return null;
                             },
@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             decoration: InputDecoration(
                               label: Text(
-                                'Email',
+                                AppLocalizations.of(context)!.email,
                                 style: TextStyle(
                                     fontSize: 20.0, color: Colors.pink[300]),
                               ),
@@ -114,10 +114,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             obscureText: true,
                             validator: (String? value) {
                               if (value!.isEmpty) {
-                                return 'Password is required';
+                                return AppLocalizations.of(context)!.passwordRequired;
                               }
                               if (value.length < 8) {
-                                return 'Password must be over 7 caracters';
+                                return AppLocalizations.of(context)!.passwordOverCara;
                               }
                               return null;
                             },
@@ -127,13 +127,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
                               label: Text(
-                                'Password',
+                                AppLocalizations.of(context)!.password,
                                 style: TextStyle(
                                     fontSize: 20.0, color: Colors.pink[300]),
                               ),
                               fillColor: Colors.white,
                               filled: true,
-                              hintText: 'Enter your password.',
+                              hintText: AppLocalizations.of(context)!.enterPassword,
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 10.0, horizontal: 20.0),
                               border: const OutlineInputBorder(
@@ -175,14 +175,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if (json['message'] == 'fail') {
                                   Alert(
                                       context: context,
-                                      title: 'Login Failed',
+                                      // ignore: use_build_context_synchronously
+                                      title: AppLocalizations.of(context)!.loginFailed,
                                       content: Column(
-                                        children: const [
-                                          SizedBox(
+                                        children:  [
+                                          const SizedBox(
                                             height: 30.0,
                                           ),
-                                          Text('Email or Password invalid'),
-                                          SizedBox(
+                                          // ignore: use_build_context_synchronously
+                                          Text(AppLocalizations.of(context)!.emailOrPasswordInvalid),
+                                          const SizedBox(
                                             height: 30.0,
                                           ),
                                         ],
@@ -209,8 +211,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               minWidth: 200.0,
                               height: 42.0,
-                              child: const Text(
-                                'Log In',
+                              child: Text(
+                                AppLocalizations.of(context)!.login,
                               ),
                             ),
                           ),

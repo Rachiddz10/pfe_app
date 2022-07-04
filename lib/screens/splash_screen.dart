@@ -154,8 +154,8 @@ class _SplashScreenState extends State<SplashScreen> {
                               animatedTexts: [
                                 WavyAnimatedText(
                                   User.first != ''
-                                      ? 'Welcome ${User.first}'
-                                      : 'welcomes you',
+                                      ? '${AppLocalizations.of(context)!.splashscreenWelcome} ${User.first}'
+                                      : AppLocalizations.of(context)!.splashscreenWelcome,
                                   textStyle: const TextStyle(
                                     fontSize: 22.0,
                                     color: Colors.white,
